@@ -10,7 +10,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rubik.className} antialiased`}>{children}</body>
+      <body className={`${rubik.className} bg-grey-50 antialiased`}>
+        {children}
+      </body>
     </html>
   );
 }

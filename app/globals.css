@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+  button {
+    @apply cursor-pointer rounded-sm outline-offset-8 transition-[color,opacity] focus:outline-2 focus:outline-purple-600 motion-reduce:transition-none;
+  }
+}
+
 @theme {
   --color-*: initial;
 
