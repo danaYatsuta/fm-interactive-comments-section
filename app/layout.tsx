@@ -1,4 +1,7 @@
 import "./globals.css";
+import { Rubik } from "next/font/google";
+
+const rubik = Rubik({ weight: ["400", "500", "700"] });
 
 export default function RootLayout({
   children,
@@ -7,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className={`${rubik.className} antialiased`}>{children}</body>
     </html>
   );
 }
