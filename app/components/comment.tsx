@@ -25,6 +25,7 @@ export default function Comment({
     dateStyle: "long",
     timeStyle: "short",
   });
+
   const formattedDate = dateTimeFormat.format(date);
 
   /* --------------------------------- Markup --------------------------------- */
@@ -58,7 +59,7 @@ export default function Comment({
           <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
             <button
               aria-label="Upvote"
-              className="w-10 rounded-xl -outline-offset-6 hover:text-purple-600"
+              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
               type="button"
             >
               +
@@ -70,7 +71,7 @@ export default function Comment({
 
             <button
               aria-label="Downvote"
-              className="w-10 rounded-xl -outline-offset-6 hover:text-purple-600"
+              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
               type="button"
             >
               −
