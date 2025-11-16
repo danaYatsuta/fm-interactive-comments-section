@@ -13,6 +13,8 @@ export default function Comment({
     content: string;
     createdAt: string;
     id: number;
+    replyingToId?: number;
+    replyingToUser?: string;
     score: number;
     userImageSrc: string;
     username: string;
@@ -35,10 +37,11 @@ export default function Comment({
     // there is no way to put time ago inside attribute
 
     <article
-      aria-labelledby={`comment-${commentData.id}`}
+      aria-labelledby={`comment-label-${commentData.id}`}
       className="text-grey-500 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md"
+      id={`comment-${commentData.id}`}
     >
-      <h2 className="sr-only" id={`comment-${commentData.id}`}>
+      <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
         Comment by {commentData.username} left{" "}
         <TimeAgo
           date={commentData.createdAt}
@@ -66,7 +69,18 @@ export default function Comment({
         />
       </div>
 
-      <p>{commentData.content}</p>
+      <p>
+        {commentData.replyingToUser && (
+          <a
+            aria-label="Jump to parent comment"
+            className="font-medium text-purple-600 hover:underline"
+            href={`#comment-${commentData.replyingToId}`}
+          >
+            @{commentData.replyingToUser}
+          </a>
+        )}{" "}
+        {commentData.content}
+      </p>
 
       <div className="flex items-center justify-between text-purple-200">
         <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">

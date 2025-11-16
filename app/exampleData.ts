@@ -26,7 +26,8 @@ const commentsData = {
             "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
           createdAt: "2025-11-07T14:00",
           id: 3,
-          replyingTo: "maxblagun",
+          replyingToId: 2,
+          replyingToUser: "maxblagun",
           score: 4,
           user: {
             image: {
@@ -41,7 +42,8 @@ const commentsData = {
             "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
           createdAt: "2025-11-13T15:00",
           id: 4,
-          replyingTo: "ramsesmiron",
+          replyingToId: 3,
+          replyingToUser: "ramsesmiron",
           score: 2,
           user: {
             image: {

@@ -11,6 +11,8 @@ export default function Home() {
               content: reply.content,
               createdAt: reply.createdAt,
               id: reply.id,
+              replyingToId: reply.replyingToId,
+              replyingToUser: reply.replyingToUser,
               score: reply.score,
               userImageSrc: reply.user.image.webp,
               username: reply.user.username,
