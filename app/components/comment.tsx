@@ -31,74 +31,76 @@ export default function Comment({
   /* --------------------------------- Markup --------------------------------- */
 
   return (
-    <li>
-      <article
-        aria-labelledby={`comment-${commentData.id}`}
-        className="text-grey-500 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md"
-      >
-        <h2 className="sr-only" id={`comment-${commentData.id}`}>
-          Comment by {commentData.username} left{" "}
-          <TimeAgo
-            date={commentData.createdAt}
-            formatter={timeAgoFormatter}
-            title={formattedDate}
-          />
-        </h2>
+    // Using aria-labelledby on visually hidden element instead of aria-label because
+    // there is no way to put time ago inside attribute
 
-        <div className="flex items-center gap-4">
-          <div className="relative size-8">
-            <Image
-              alt=""
-              fill={true}
-              sizes="2rem"
-              src={commentData.userImageSrc}
-            />
-          </div>
+    <article
+      aria-labelledby={`comment-${commentData.id}`}
+      className="text-grey-500 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md"
+    >
+      <h2 className="sr-only" id={`comment-${commentData.id}`}>
+        Comment by {commentData.username} left{" "}
+        <TimeAgo
+          date={commentData.createdAt}
+          formatter={timeAgoFormatter}
+          title={formattedDate}
+        />
+      </h2>
 
-          <p className="text-grey-800 font-medium">{commentData.username}</p>
-
-          <TimeAgo
-            date={commentData.createdAt}
-            formatter={timeAgoFormatter}
-            title={formattedDate}
+      <div className="flex items-center gap-4">
+        <div className="relative size-8">
+          <Image
+            alt=""
+            fill={true}
+            sizes="2rem"
+            src={commentData.userImageSrc}
           />
         </div>
 
-        <p>{commentData.content}</p>
+        <p className="text-grey-800 font-medium">{commentData.username}</p>
 
-        <div className="flex items-center justify-between text-purple-200">
-          <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
-            <button
-              aria-label="Upvote"
-              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
-              type="button"
-            >
-              +
-            </button>
+        <TimeAgo
+          date={commentData.createdAt}
+          formatter={timeAgoFormatter}
+          title={formattedDate}
+        />
+      </div>
 
-            <p className="grow self-center text-center text-base font-medium text-purple-600">
-              {commentData.score}
-            </p>
+      <p>{commentData.content}</p>
 
-            <button
-              aria-label="Downvote"
-              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
-              type="button"
-            >
-              −
-            </button>
-          </div>
-
+      <div className="flex items-center justify-between text-purple-200">
+        <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
           <button
-            className="flex items-center gap-2 font-medium text-purple-600 hover:opacity-50"
+            aria-label="Upvote"
+            className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
             type="button"
           >
-            <Image alt="" src={iconReply} />
-            Reply
+            +
+          </button>
+
+          <p className="grow self-center text-center text-base font-medium text-purple-600">
+            <span className="sr-only">Score: </span>
+            {commentData.score}
+          </p>
+
+          <button
+            aria-label="Downvote"
+            className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
+            type="button"
+          >
+            −
           </button>
         </div>
-      </article>
-    </li>
+
+        <button
+          className="flex items-center gap-2 font-medium text-purple-600 hover:opacity-50"
+          type="button"
+        >
+          <Image alt="" src={iconReply} />
+          Reply
+        </button>
+      </div>
+    </article>
   );
 }
 
