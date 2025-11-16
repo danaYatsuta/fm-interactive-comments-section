@@ -46,6 +46,7 @@ export default function Comment({
         <TimeAgo
           date={commentData.createdAt}
           formatter={timeAgoFormatter}
+          minPeriod={60}
           title={formattedDate}
         />
       </h2>
@@ -65,6 +66,7 @@ export default function Comment({
         <TimeAgo
           date={commentData.createdAt}
           formatter={timeAgoFormatter}
+          minPeriod={60}
           title={formattedDate}
         />
       </div>
