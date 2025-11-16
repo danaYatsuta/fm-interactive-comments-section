@@ -1,7 +1,8 @@
 "use client";
 
-import { useTimeAgo } from "@shined/react-use";
 import Image from "next/image";
+import TimeAgo, { Formatter } from "react-timeago";
+import defaultFormatter from "react-timeago/defaultFormatter";
 
 import iconReply from "@/public/icons/icon-reply.svg";
 
@@ -11,14 +12,13 @@ export default function Comment({
   commentData: {
     content: string;
     createdAt: string;
+    id: number;
     score: number;
     userImageSrc: string;
     username: string;
   };
 }>) {
   /* ------------------------------ Derived State ----------------------------- */
-
-  const timeAgo = useTimeAgo(commentData.createdAt);
 
   const date = new Date(commentData.createdAt);
   const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
@@ -33,9 +33,18 @@ export default function Comment({
   return (
     <li>
       <article
-        aria-label={`Comment from ${commentData.username} left ${timeAgo}`}
+        aria-labelledby={`comment-${commentData.id}`}
         className="text-grey-500 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md"
       >
+        <h2 className="sr-only" id={`comment-${commentData.id}`}>
+          Comment by {commentData.username} left{" "}
+          <TimeAgo
+            date={commentData.createdAt}
+            formatter={timeAgoFormatter}
+            title={formattedDate}
+          />
+        </h2>
+
         <div className="flex items-center gap-4">
           <div className="relative size-8">
             <Image
@@ -48,9 +57,11 @@ export default function Comment({
 
           <p className="text-grey-800 font-medium">{commentData.username}</p>
 
-          <time dateTime={commentData.createdAt} title={formattedDate}>
-            {timeAgo}
-          </time>
+          <TimeAgo
+            date={commentData.createdAt}
+            formatter={timeAgoFormatter}
+            title={formattedDate}
+          />
         </div>
 
         <p>{commentData.content}</p>
@@ -90,3 +101,24 @@ export default function Comment({
     </li>
   );
 }
+
+// For some reason, just using nextFormatter without any arguments causes an error: https://github.com/nmn/react-timeago/issues/233
+
+const timeAgoFormatter: Formatter = (
+  value,
+  unit,
+  suffix,
+  epochMilliseconds,
+  nextFormatter,
+  now,
+) => {
+  if (unit === "second") return "just now";
+  return defaultFormatter(
+    value,
+    unit,
+    suffix,
+    epochMilliseconds,
+    nextFormatter,
+    now,
+  );
+};

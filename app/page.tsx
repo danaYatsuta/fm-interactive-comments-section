@@ -8,6 +8,7 @@ export default function Home() {
         commentData={{
           content: comment.content,
           createdAt: comment.createdAt,
+          id: comment.id,
           score: comment.score,
           userImageSrc: comment.user.image.webp,
           username: comment.user.username,
