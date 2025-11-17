@@ -5,6 +5,8 @@ import defaultFormatter from "react-timeago/defaultFormatter";
 
 import BaseCard from "@/app/components/base-card";
 import IconButton from "@/app/components/icon-button";
+import iconDelete from "@/public/icons/icon-delete.svg";
+import iconEdit from "@/public/icons/icon-edit.svg";
 import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
@@ -22,6 +24,11 @@ export default function Comment({
   };
 }>) {
   /* ------------------------------ Derived State ----------------------------- */
+
+  // TODO this is a mock for checking whether comment belongs to current user
+  // Replace with actual check when auth is implemented
+
+  const canUserEdit = commentData.username === "juliusomo";
 
   const date = new Date(commentData.createdAt);
   const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
@@ -110,7 +117,14 @@ export default function Comment({
             </button>
           </div>
 
-          <IconButton icon={iconReply} text="Reply" />
+          {canUserEdit ? (
+            <div className="flex gap-4">
+              <IconButton color="pink" icon={iconDelete} text="Delete" />
+              <IconButton icon={iconEdit} text="Edit" />
+            </div>
+          ) : (
+            <IconButton icon={iconReply} text="Reply" />
+          )}
         </div>
       </article>
     </BaseCard>
