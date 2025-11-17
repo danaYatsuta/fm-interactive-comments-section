@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import Comment from "@/app/components/comment";
 import commentsData from "@/app/exampleData";
@@ -78,12 +79,7 @@ export default function Home() {
               />
             </div>
 
-            <button
-              className="h-12 rounded-lg bg-purple-600 px-8 font-bold text-white uppercase hover:opacity-50"
-              type="submit"
-            >
-              Send
-            </button>
+            <BaseButton text="Send" type="submit" />
           </div>
         </form>
       </BaseCard>
