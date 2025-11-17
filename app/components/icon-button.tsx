@@ -11,11 +11,18 @@ type Color = keyof typeof colors;
 export default function IconButton({
   color = "purple",
   icon,
+  onClick,
   text,
-}: Readonly<{ color?: Color; icon: StaticImport; text: string }>) {
+}: Readonly<{
+  color?: Color;
+  icon: StaticImport;
+  onClick?: () => void;
+  text: string;
+}>) {
   return (
     <button
       className={`${colors[color]} flex items-center gap-2 rounded-sm font-medium hover:opacity-50`}
+      onClick={onClick}
       type="button"
     >
       <Image alt="" src={icon} />

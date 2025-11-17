@@ -1,8 +1,11 @@
 "use client";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Image from "next/image";
+import { useRef } from "react";
 import TimeAgo, { Formatter } from "react-timeago";
 import defaultFormatter from "react-timeago/defaultFormatter";
 
+import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import IconButton from "@/app/components/icon-button";
 import IconMinus from "@/app/components/icon-minus";
@@ -39,6 +42,31 @@ export default function Comment({
   });
 
   const formattedDate = dateTimeFormat.format(date);
+
+  /* -------------------------------- Handlers -------------------------------- */
+
+  const deleteDialog = useRef<HTMLDialogElement>(null);
+
+  function handleDeleteClick() {
+    if (deleteDialog.current === null) return;
+
+    deleteDialog.current.showModal();
+    disableBodyScroll(deleteDialog.current);
+  }
+
+  function handleDeleteCancelClick() {
+    if (deleteDialog.current === null) return;
+
+    deleteDialog.current.close();
+    enableBodyScroll(deleteDialog.current);
+  }
+
+  function handleDeleteConfirmClick() {
+    if (deleteDialog.current === null) return;
+
+    deleteDialog.current.close();
+    enableBodyScroll(deleteDialog.current);
+  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -99,7 +127,7 @@ export default function Comment({
           <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
             <button
               aria-label="Upvote"
-              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
+              className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
               type="button"
             >
               <IconPlus />
@@ -112,7 +140,7 @@ export default function Comment({
 
             <button
               aria-label="Downvote"
-              className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
+              className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
               type="button"
             >
               <IconMinus />
@@ -121,13 +149,47 @@ export default function Comment({
 
           {canUserEdit ? (
             <div className="flex gap-4">
-              <IconButton color="pink" icon={iconDelete} text="Delete" />
+              <IconButton
+                color="pink"
+                icon={iconDelete}
+                onClick={handleDeleteClick}
+                text="Delete"
+              />
+
               <IconButton icon={iconEdit} text="Edit" />
             </div>
           ) : (
             <IconButton icon={iconReply} text="Reply" />
           )}
         </div>
+
+        <dialog
+          className="text-grey-500 fixed right-4 left-4 my-auto w-auto max-w-none flex-col gap-3.5 rounded-lg px-7 py-6 backdrop:bg-black/50 open:flex"
+          ref={deleteDialog}
+        >
+          <h3 className="text-grey-800 text-xl font-medium">Delete comment</h3>
+
+          <p>
+            Are you sure you want to delete this comment? This will remove the
+            comment and can&apos;t be undone.
+          </p>
+
+          <div className="flex gap-3">
+            <BaseButton
+              color="grey"
+              grow
+              onClick={handleDeleteCancelClick}
+              text="No, cancel"
+            />
+
+            <BaseButton
+              color="pink"
+              grow
+              onClick={handleDeleteConfirmClick}
+              text="Yes, delete"
+            />
+          </div>
+        </dialog>
       </article>
     </BaseCard>
   );

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @layer base {
-  :focus {
-    @apply outline-2 outline-offset-2 outline-purple-600;
+  :focus-visible {
+    @apply outline-2 outline-offset-2;
   }
 
   button {
@@ -12,6 +12,8 @@
 
 @theme {
   --color-*: initial;
+
+  --color-black: hsl(0, 0%, 0%);
 
   --color-grey-50: hsl(228, 33%, 97%);
   --color-grey-100: hsl(223, 19%, 93%);
