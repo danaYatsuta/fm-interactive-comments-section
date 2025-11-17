@@ -4,6 +4,7 @@ import TimeAgo, { Formatter } from "react-timeago";
 import defaultFormatter from "react-timeago/defaultFormatter";
 
 import BaseCard from "@/app/components/base-card";
+import IconButton from "@/app/components/icon-button";
 import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
@@ -109,13 +110,7 @@ export default function Comment({
             </button>
           </div>
 
-          <button
-            className="flex items-center gap-2 rounded-sm font-medium text-purple-600 hover:opacity-50"
-            type="button"
-          >
-            <Image alt="" src={iconReply} />
-            Reply
-          </button>
+          <IconButton icon={iconReply} text="Reply" />
         </div>
       </article>
     </BaseCard>
