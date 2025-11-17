@@ -1,3 +1,6 @@
+import Image from "next/image";
+
+import BaseCard from "@/app/components/base-card";
 import Comment from "@/app/components/comment";
 import commentsData from "@/app/exampleData";
 
@@ -48,12 +51,42 @@ export default function Home() {
   });
 
   return (
-    <main className="mx-4 my-8">
+    <main className="mx-4 my-8 flex flex-col gap-4">
+      <h1 className="sr-only">
+        Frontend Mentor | Interactive comments section
+      </h1>
+
       <ul aria-label="Comments" className="flex flex-col gap-4">
         {comments}
       </ul>
 
-      {/* <form></form> */}
+      <BaseCard>
+        <form className="flex flex-col gap-4">
+          <textarea
+            aria-label="Write comment"
+            className="border-grey-100 text-grey-800 placeholder-grey-500 min-h-24 w-full resize-none rounded-lg border px-6 py-2.5 outline-none focus:border-purple-600"
+            placeholder="Add a comment..."
+          ></textarea>
+
+          <div className="flex items-center justify-between">
+            <div className="relative size-8">
+              <Image
+                alt=""
+                fill={true}
+                sizes="2rem"
+                src="/avatars/image-juliusomo.webp"
+              />
+            </div>
+
+            <button
+              className="h-12 rounded-lg bg-purple-600 px-8 font-bold text-white uppercase hover:opacity-50"
+              type="submit"
+            >
+              Send
+            </button>
+          </div>
+        </form>
+      </BaseCard>
     </main>
   );
 }

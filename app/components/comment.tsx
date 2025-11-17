@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import TimeAgo, { Formatter } from "react-timeago";
 import defaultFormatter from "react-timeago/defaultFormatter";
@@ -77,7 +76,7 @@ export default function Comment({
           {commentData.replyingToUser && (
             <a
               aria-label="Jump to parent comment"
-              className="font-medium text-purple-600 hover:underline"
+              className="rounded-sm font-medium text-purple-600 hover:underline"
               href={`#comment-${commentData.replyingToId}`}
             >
               @{commentData.replyingToUser}
@@ -111,7 +110,7 @@ export default function Comment({
           </div>
 
           <button
-            className="flex items-center gap-2 font-medium text-purple-600 hover:opacity-50"
+            className="flex items-center gap-2 rounded-sm font-medium text-purple-600 hover:opacity-50"
             type="button"
           >
             <Image alt="" src={iconReply} />
