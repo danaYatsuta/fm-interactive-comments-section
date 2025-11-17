@@ -5,6 +5,8 @@ import defaultFormatter from "react-timeago/defaultFormatter";
 
 import BaseCard from "@/app/components/base-card";
 import IconButton from "@/app/components/icon-button";
+import IconMinus from "@/app/components/icon-minus";
+import IconPlus from "@/app/components/icon-plus";
 import iconDelete from "@/public/icons/icon-delete.svg";
 import iconEdit from "@/public/icons/icon-edit.svg";
 import iconReply from "@/public/icons/icon-reply.svg";
@@ -100,7 +102,7 @@ export default function Comment({
               className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
               type="button"
             >
-              +
+              <IconPlus />
             </button>
 
             <p className="grow self-center text-center text-base font-medium text-purple-600">
@@ -113,7 +115,7 @@ export default function Comment({
               className="w-10 rounded-xl -outline-offset-2 hover:text-purple-600"
               type="button"
             >
-              −
+              <IconMinus />
             </button>
           </div>
 
