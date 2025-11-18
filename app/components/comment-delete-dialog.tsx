@@ -1,6 +1,6 @@
 import BaseButton from "@/app/components/base-button";
 
-export default function DeleteDialog({
+export default function CommentDeleteDialog({
   onCancelClick,
   onConfirmClick,
   ref,

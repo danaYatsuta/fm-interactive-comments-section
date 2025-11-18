@@ -8,8 +8,8 @@ import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import CommentControls from "@/app/components/comment-controls";
+import CommentDeleteDialog from "@/app/components/comment-delete-dialog";
 import CommentForm from "@/app/components/comment-form";
-import DeleteDialog from "@/app/components/delete-dialog";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
 
 export default function Comment({
@@ -184,7 +184,7 @@ export default function Comment({
         />
       )}
 
-      <DeleteDialog
+      <CommentDeleteDialog
         onCancelClick={handleDeleteCancelClick}
         onConfirmClick={handleDeleteConfirmClick}
         ref={deleteDialog}
