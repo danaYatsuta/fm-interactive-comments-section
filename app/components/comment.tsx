@@ -9,6 +9,7 @@ import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import CommentForm from "@/app/components/comment-form";
+import DeleteDialog from "@/app/components/delete-dialog";
 import IconButton from "@/app/components/icon-button";
 import IconMinus from "@/app/components/icon-minus";
 import IconPlus from "@/app/components/icon-plus";
@@ -228,33 +229,11 @@ export default function Comment({
         />
       )}
 
-      <dialog
-        className="text-grey-500 fixed right-4 left-4 my-auto w-auto max-w-none flex-col gap-3.5 rounded-lg px-7 py-6 backdrop:bg-black/50 open:flex"
+      <DeleteDialog
+        onCancelClick={handleDeleteCancelClick}
+        onConfirmClick={handleDeleteConfirmClick}
         ref={deleteDialog}
-      >
-        <h3 className="text-grey-800 text-xl font-medium">Delete comment</h3>
-
-        <p>
-          Are you sure you want to delete this comment? This will remove the
-          comment and can&apos;t be undone.
-        </p>
-
-        <div className="flex gap-3">
-          <BaseButton
-            color="grey"
-            grow
-            onClick={handleDeleteCancelClick}
-            text="No, cancel"
-          />
-
-          <BaseButton
-            color="pink"
-            grow
-            onClick={handleDeleteConfirmClick}
-            text="Yes, delete"
-          />
-        </div>
-      </dialog>
+      />
     </div>
   );
 }
