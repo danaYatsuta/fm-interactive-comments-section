@@ -88,7 +88,7 @@ export default function Comment({
       <BaseCard>
         <article
           aria-labelledby={`comment-label-${commentData.id}`}
-          className="flex gap-4"
+          className="flex gap-6"
           id={`comment-${commentData.id}`}
         >
           <div className="hidden md:block">
