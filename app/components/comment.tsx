@@ -1,12 +1,13 @@
 "use client";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import TimeAgo, { Formatter } from "react-timeago";
 import defaultFormatter from "react-timeago/defaultFormatter";
 
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
+import BaseTextArea from "@/app/components/base-text-area";
 import CommentForm from "@/app/components/comment-form";
 import IconButton from "@/app/components/icon-button";
 import IconMinus from "@/app/components/icon-minus";
@@ -17,8 +18,10 @@ import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
   commentData,
+  isEditFormShown,
   isReplyFormShown,
-  onReplyCancelClick,
+  onCancelClick,
+  onEditClick,
   onReplyClick,
 }: Readonly<{
   commentData: {
@@ -31,8 +34,10 @@ export default function Comment({
     userImageSrc: string;
     username: string;
   };
+  isEditFormShown: boolean;
   isReplyFormShown: boolean;
-  onReplyCancelClick: () => void;
+  onCancelClick: () => void;
+  onEditClick: () => void;
   onReplyClick: () => void;
 }>) {
   /* ------------------------------ Derived State ----------------------------- */
@@ -130,103 +135,126 @@ export default function Comment({
             />
           </div>
 
-          <p>
-            {commentData.replyingToUser && (
-              <a
-                aria-label="Jump to parent comment"
-                className="rounded-sm font-medium text-purple-600 hover:underline"
-                href={`#comment-${commentData.replyingToId}`}
-              >
-                @{commentData.replyingToUser}
-              </a>
-            )}{" "}
-            {commentData.content}
-          </p>
+          {isEditFormShown ? (
+            <form className="flex flex-col gap-4">
+              <BaseTextArea
+                defaultValue={commentData.content}
+                placeholder="Edit the comment..."
+              />
 
-          <div className="flex items-center justify-between text-purple-200">
-            <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
-              <button
-                aria-label="Upvote"
-                className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
-                type="button"
-              >
-                <IconPlus />
-              </button>
-
-              <p className="grow self-center text-center text-base font-medium text-purple-600">
-                <span className="sr-only">Score: </span>
-                {commentData.score}
-              </p>
-
-              <button
-                aria-label="Downvote"
-                className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
-                type="button"
-              >
-                <IconMinus />
-              </button>
-            </div>
-
-            {canUserEdit ? (
-              <div className="flex gap-4">
-                <IconButton
+              <div className="flex justify-end gap-3">
+                <BaseButton
                   color="pink"
-                  icon={iconDelete}
-                  onClick={handleDeleteClick}
-                  text="Delete"
+                  onClick={onCancelClick}
+                  text="Cancel"
                 />
 
-                <IconButton icon={iconEdit} text="Edit" />
+                <BaseButton text="Update" type="submit" />
               </div>
-            ) : (
-              <IconButton
-                icon={iconReply}
-                onClick={onReplyClick}
-                text="Reply"
-              />
-            )}
-          </div>
+            </form>
+          ) : (
+            <>
+              <p>
+                {commentData.replyingToUser && (
+                  <a
+                    aria-label="Jump to parent comment"
+                    className="rounded-sm font-medium text-purple-600 hover:underline"
+                    href={`#comment-${commentData.replyingToId}`}
+                  >
+                    @{commentData.replyingToUser}
+                  </a>
+                )}{" "}
+                {commentData.content}
+              </p>
 
-          <dialog
-            className="text-grey-500 fixed right-4 left-4 my-auto w-auto max-w-none flex-col gap-3.5 rounded-lg px-7 py-6 backdrop:bg-black/50 open:flex"
-            ref={deleteDialog}
-          >
-            <h3 className="text-grey-800 text-xl font-medium">
-              Delete comment
-            </h3>
+              <div className="flex items-center justify-between text-purple-200">
+                <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
+                  <button
+                    aria-label="Upvote"
+                    className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
+                    type="button"
+                  >
+                    <IconPlus />
+                  </button>
 
-            <p>
-              Are you sure you want to delete this comment? This will remove the
-              comment and can&apos;t be undone.
-            </p>
+                  <p className="grow self-center text-center text-base font-medium text-purple-600">
+                    <span className="sr-only">Score: </span>
+                    {commentData.score}
+                  </p>
 
-            <div className="flex gap-3">
-              <BaseButton
-                color="grey"
-                grow
-                onClick={handleDeleteCancelClick}
-                text="No, cancel"
-              />
+                  <button
+                    aria-label="Downvote"
+                    className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
+                    type="button"
+                  >
+                    <IconMinus />
+                  </button>
+                </div>
 
-              <BaseButton
-                color="pink"
-                grow
-                onClick={handleDeleteConfirmClick}
-                text="Yes, delete"
-              />
-            </div>
-          </dialog>
+                {canUserEdit ? (
+                  <div className="flex gap-4">
+                    <IconButton
+                      color="pink"
+                      icon={iconDelete}
+                      onClick={handleDeleteClick}
+                      text="Delete"
+                    />
+
+                    <IconButton
+                      icon={iconEdit}
+                      onClick={onEditClick}
+                      text="Edit"
+                    />
+                  </div>
+                ) : (
+                  <IconButton
+                    icon={iconReply}
+                    onClick={onReplyClick}
+                    text="Reply"
+                  />
+                )}
+              </div>
+            </>
+          )}
         </article>
       </BaseCard>
 
       {isReplyFormShown && (
         <CommentForm
           buttonText="Reply"
-          onCancelClick={onReplyCancelClick}
+          onCancelClick={onCancelClick}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
         />
       )}
+
+      <dialog
+        className="text-grey-500 fixed right-4 left-4 my-auto w-auto max-w-none flex-col gap-3.5 rounded-lg px-7 py-6 backdrop:bg-black/50 open:flex"
+        ref={deleteDialog}
+      >
+        <h3 className="text-grey-800 text-xl font-medium">Delete comment</h3>
+
+        <p>
+          Are you sure you want to delete this comment? This will remove the
+          comment and can&apos;t be undone.
+        </p>
+
+        <div className="flex gap-3">
+          <BaseButton
+            color="grey"
+            grow
+            onClick={handleDeleteCancelClick}
+            text="No, cancel"
+          />
+
+          <BaseButton
+            color="pink"
+            grow
+            onClick={handleDeleteConfirmClick}
+            text="Yes, delete"
+          />
+        </div>
+      </dialog>
     </div>
   );
 }

@@ -27,7 +27,11 @@ export default function Home() {
     setShownForm({ id, type: "reply" });
   }
 
-  function handleReplyCancelClick() {
+  function handleEditClick(id: number) {
+    setShownForm({ id, type: "edit" });
+  }
+
+  function handleCancelClick() {
     setShownForm({ id: null, type: null });
   }
 
@@ -48,8 +52,14 @@ export default function Home() {
               userImageSrc: reply.user.image.webp,
               username: reply.user.username,
             }}
-            isReplyFormShown={reply.id === shownForm.id}
-            onReplyCancelClick={handleReplyCancelClick}
+            isEditFormShown={
+              shownForm.type === "edit" && reply.id === shownForm.id
+            }
+            isReplyFormShown={
+              shownForm.type === "reply" && reply.id === shownForm.id
+            }
+            onCancelClick={handleCancelClick}
+            onEditClick={() => handleEditClick(reply.id)}
             onReplyClick={() => handleReplyClick(reply.id)}
           />
         </li>
@@ -67,8 +77,14 @@ export default function Home() {
             userImageSrc: comment.user.image.webp,
             username: comment.user.username,
           }}
-          isReplyFormShown={comment.id === shownForm.id}
-          onReplyCancelClick={handleReplyCancelClick}
+          isEditFormShown={
+            shownForm.type === "edit" && comment.id === shownForm.id
+          }
+          isReplyFormShown={
+            shownForm.type === "reply" && comment.id === shownForm.id
+          }
+          onCancelClick={handleCancelClick}
+          onEditClick={() => handleEditClick(comment.id)}
           onReplyClick={() => handleReplyClick(comment.id)}
         />
 
