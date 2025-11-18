@@ -17,6 +17,9 @@ import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
   commentData,
+  isReplyFormShown,
+  onReplyCancelClick,
+  onReplyClick,
 }: Readonly<{
   commentData: {
     content: string;
@@ -28,11 +31,10 @@ export default function Comment({
     userImageSrc: string;
     username: string;
   };
+  isReplyFormShown: boolean;
+  onReplyCancelClick: () => void;
+  onReplyClick: () => void;
 }>) {
-  /* ---------------------------------- State --------------------------------- */
-
-  const [shownForm, setShownForm] = useState<"edit" | "none" | "reply">("none");
-
   /* ------------------------------ Derived State ----------------------------- */
 
   // TODO this is a mock for checking whether comment belongs to current user
@@ -179,7 +181,7 @@ export default function Comment({
             ) : (
               <IconButton
                 icon={iconReply}
-                onClick={() => setShownForm("reply")}
+                onClick={onReplyClick}
                 text="Reply"
               />
             )}
@@ -217,10 +219,10 @@ export default function Comment({
         </article>
       </BaseCard>
 
-      {shownForm === "reply" && (
+      {isReplyFormShown && (
         <CommentForm
           buttonText="Reply"
-          onCancelClick={() => setShownForm("none")}
+          onCancelClick={onReplyCancelClick}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
         />
