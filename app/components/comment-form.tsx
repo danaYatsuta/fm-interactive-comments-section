@@ -6,9 +6,13 @@ import BaseTextArea from "@/app/components/base-text-area";
 
 export default function CommentForm({
   buttonText,
+  onCancelClick,
+  showCancelButton = false,
   textAreaPlaceholder,
 }: {
   buttonText: string;
+  onCancelClick?: () => void;
+  showCancelButton?: boolean;
   textAreaPlaceholder?: string;
 }) {
   return (
@@ -26,7 +30,18 @@ export default function CommentForm({
             />
           </div>
 
-          <BaseButton text={buttonText} type="submit" />
+          <div className="flex gap-3">
+            {showCancelButton && (
+              <BaseButton
+                color="pink"
+                onClick={onCancelClick}
+                text="Cancel"
+                type="button"
+              />
+            )}
+
+            <BaseButton text={buttonText} type="submit" />
+          </div>
         </div>
       </form>
     </BaseCard>
