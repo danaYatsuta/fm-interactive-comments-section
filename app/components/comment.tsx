@@ -2,8 +2,7 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Image from "next/image";
 import { useRef } from "react";
-import TimeAgo, { Formatter } from "react-timeago";
-import defaultFormatter from "react-timeago/defaultFormatter";
+import TimeAgo from "react-timeago";
 
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
@@ -13,6 +12,7 @@ import DeleteDialog from "@/app/components/delete-dialog";
 import IconButton from "@/app/components/icon-button";
 import IconMinus from "@/app/components/icon-minus";
 import IconPlus from "@/app/components/icon-plus";
+import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
 import iconDelete from "@/public/icons/icon-delete.svg";
 import iconEdit from "@/public/icons/icon-edit.svg";
 import iconReply from "@/public/icons/icon-reply.svg";
@@ -237,24 +237,3 @@ export default function Comment({
     </div>
   );
 }
-
-// For some reason, just using nextFormatter without any arguments causes an error: https://github.com/nmn/react-timeago/issues/233
-
-const timeAgoFormatter: Formatter = (
-  value,
-  unit,
-  suffix,
-  epochMilliseconds,
-  nextFormatter,
-  now,
-) => {
-  if (unit === "second") return "just now";
-  return defaultFormatter(
-    value,
-    unit,
-    suffix,
-    epochMilliseconds,
-    nextFormatter,
-    now,
-  );
-};
