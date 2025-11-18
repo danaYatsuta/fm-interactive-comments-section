@@ -11,11 +11,7 @@ import CommentControls from "@/app/components/comment-controls";
 import CommentDeleteDialog from "@/app/components/comment-delete-dialog";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
-import IconButton from "@/app/components/icon-button";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
-import iconDelete from "@/public/icons/icon-delete.svg";
-import iconEdit from "@/public/icons/icon-edit.svg";
-import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
   commentData,
@@ -92,85 +88,59 @@ export default function Comment({
       <BaseCard>
         <article
           aria-labelledby={`comment-label-${commentData.id}`}
-          className="flex flex-col gap-4"
+          className="flex gap-4"
           id={`comment-${commentData.id}`}
         >
-          <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
-            Comment by {commentData.username} left{" "}
-            <TimeAgo
-              date={commentData.createdAt}
-              formatter={timeAgoFormatter}
-              minPeriod={60}
-              title={formattedDate}
-            />
-          </h2>
-
-          <div className="xs:gap-4 flex items-center gap-2">
-            <div className="relative size-8">
-              <Image
-                alt=""
-                fill={true}
-                sizes="2rem"
-                src={commentData.userImageSrc}
-              />
-            </div>
-
-            <p
-              aria-hidden="true"
-              className="text-grey-800 flex items-center gap-2 font-medium"
-            >
-              <span className="max-w-28 truncate">{commentData.username}</span>
-              {canUserEdit && (
-                <span className="xs:text-sm flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-xs text-white">
-                  you
-                </span>
-              )}
-            </p>
-
-            <TimeAgo
-              aria-hidden="true"
-              date={commentData.createdAt}
-              formatter={timeAgoFormatter}
-              minPeriod={60}
-              title={formattedDate}
-            />
+          <div className="hidden md:block">
+            <CommentVoteButtons score={commentData.score} />
           </div>
 
-          {isEditFormShown ? (
-            <form className="flex flex-col gap-4">
-              <BaseTextArea
-                defaultValue={commentData.content}
-                placeholder="Edit the comment..."
+          <div className="flex flex-col gap-4">
+            <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
+              Comment by {commentData.username} left{" "}
+              <TimeAgo
+                date={commentData.createdAt}
+                formatter={timeAgoFormatter}
+                minPeriod={60}
+                title={formattedDate}
               />
+            </h2>
 
-              <div className="flex justify-end gap-3">
-                <BaseButton
-                  color="pink"
-                  onClick={onCancelClick}
-                  text="Cancel"
+            <div className="flex justify-between">
+              <div className="xs:gap-4 flex items-center gap-2">
+                <div className="relative size-8">
+                  <Image
+                    alt=""
+                    fill={true}
+                    sizes="2rem"
+                    src={commentData.userImageSrc}
+                  />
+                </div>
+
+                <p
+                  aria-hidden="true"
+                  className="text-grey-800 flex items-center gap-2 font-medium"
+                >
+                  <span className="max-w-28 truncate">
+                    {commentData.username}
+                  </span>
+                  {canUserEdit && (
+                    <span className="xs:text-sm flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-xs text-white">
+                      you
+                    </span>
+                  )}
+                </p>
+
+                <TimeAgo
+                  aria-hidden="true"
+                  date={commentData.createdAt}
+                  formatter={timeAgoFormatter}
+                  minPeriod={60}
+                  title={formattedDate}
                 />
-
-                <BaseButton text="Update" type="submit" />
               </div>
-            </form>
-          ) : (
-            <>
-              <p>
-                {commentData.replyingToUser && (
-                  <a
-                    aria-label="Jump to parent comment"
-                    className="rounded-sm font-medium text-purple-600 hover:underline"
-                    href={`#comment-${commentData.replyingToId}`}
-                  >
-                    @{commentData.replyingToUser}
-                  </a>
-                )}{" "}
-                {commentData.content}
-              </p>
 
-              <div className="flex items-center justify-between text-purple-200">
-                <CommentVoteButtons score={commentData.score} />
-
+              <div className="hidden md:block">
                 <CommentControls
                   canUserEdit={canUserEdit}
                   onDeleteClick={handleDeleteClick}
@@ -178,8 +148,53 @@ export default function Comment({
                   onReplyClick={onReplyClick}
                 />
               </div>
-            </>
-          )}
+            </div>
+
+            {isEditFormShown ? (
+              <form className="flex flex-col gap-4">
+                <BaseTextArea
+                  defaultValue={commentData.content}
+                  placeholder="Edit the comment..."
+                />
+
+                <div className="flex justify-end gap-3">
+                  <BaseButton
+                    color="pink"
+                    onClick={onCancelClick}
+                    text="Cancel"
+                  />
+
+                  <BaseButton text="Update" type="submit" />
+                </div>
+              </form>
+            ) : (
+              <>
+                <p>
+                  {commentData.replyingToUser && (
+                    <a
+                      aria-label="Jump to parent comment"
+                      className="rounded-sm font-medium text-purple-600 hover:underline"
+                      href={`#comment-${commentData.replyingToId}`}
+                    >
+                      @{commentData.replyingToUser}
+                    </a>
+                  )}{" "}
+                  {commentData.content}
+                </p>
+
+                <div className="flex items-center justify-between text-purple-200 md:hidden">
+                  <CommentVoteButtons score={commentData.score} />
+
+                  <CommentControls
+                    canUserEdit={canUserEdit}
+                    onDeleteClick={handleDeleteClick}
+                    onEditClick={onEditClick}
+                    onReplyClick={onReplyClick}
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </article>
       </BaseCard>
 
