@@ -100,8 +100,16 @@ export default function Comment({
             />
           </div>
 
-          <p aria-hidden="true" className="text-grey-800 font-medium">
+          <p
+            aria-hidden="true"
+            className="text-grey-800 flex items-center gap-2 font-medium"
+          >
             {commentData.username}
+            {canUserEdit && (
+              <span className="flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-sm text-white">
+                you
+              </span>
+            )}
           </p>
 
           <TimeAgo
