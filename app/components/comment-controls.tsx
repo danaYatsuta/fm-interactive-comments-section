@@ -16,7 +16,7 @@ export default function CommentControls({
 }>) {
   if (canUserEdit) {
     return (
-      <div className="flex gap-4">
+      <div className="flex gap-4 md:gap-6">
         <IconButton
           color="pink"
           icon={iconDelete}

@@ -21,7 +21,7 @@ export default function BaseButton({
 }>) {
   return (
     <button
-      className={`${colors[color]} ${grow && "grow"} h-12 min-w-26 rounded-lg font-medium text-white uppercase hover:opacity-50`}
+      className={`${colors[color]} ${grow && "flex-1"} h-12 min-w-26 rounded-lg font-medium text-white uppercase hover:opacity-50`}
       onClick={onClick}
       type={type}
     >

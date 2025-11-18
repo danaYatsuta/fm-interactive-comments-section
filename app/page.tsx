@@ -91,7 +91,7 @@ export default function Home() {
         {replies.length !== 0 && (
           <ul
             aria-label="Replies"
-            className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4"
+            className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"
           >
             {replies}
           </ul>
@@ -101,12 +101,12 @@ export default function Home() {
   });
 
   return (
-    <main className="mx-4 my-8 flex flex-col gap-4 md:mx-auto md:my-16 md:w-184">
+    <main className="mx-4 my-8 flex flex-col gap-4 md:mx-auto md:my-16 md:w-184 md:gap-5">
       <h1 className="sr-only">
         Frontend Mentor | Interactive comments section
       </h1>
 
-      <ul aria-label="Comments" className="flex flex-col gap-4">
+      <ul aria-label="Comments" className="flex flex-col gap-4 md:gap-5">
         {comments}
       </ul>
 
