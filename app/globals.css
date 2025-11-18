@@ -11,6 +11,9 @@
 }
 
 @theme {
+  /* 375 // 16 */
+  --breakpoint-xs: 23rem;
+
   --color-*: initial;
 
   --color-black: hsl(0, 0%, 0%);

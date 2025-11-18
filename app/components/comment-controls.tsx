@@ -20,7 +20,7 @@ export default function CommentControls({
 }>) {
   return (
     <div className="flex items-center justify-between text-purple-200">
-      <div className="bg-grey-50 flex h-10 w-25 rounded-xl text-lg font-bold">
+      <div className="bg-grey-50 flex h-10 w-25 rounded-xl font-bold">
         <button
           aria-label="Upvote"
           className="w-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
@@ -29,7 +29,7 @@ export default function CommentControls({
           <IconPlus />
         </button>
 
-        <p className="grow self-center text-center text-base font-medium text-purple-600">
+        <p className="xs:text-base grow self-center text-center text-sm font-medium text-purple-600">
           <span className="sr-only">Score: </span>
           {score}
         </p>

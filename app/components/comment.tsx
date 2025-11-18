@@ -100,7 +100,7 @@ export default function Comment({
             />
           </h2>
 
-          <div className="flex items-center gap-4">
+          <div className="xs:gap-4 flex items-center gap-2">
             <div className="relative size-8">
               <Image
                 alt=""
@@ -114,9 +114,9 @@ export default function Comment({
               aria-hidden="true"
               className="text-grey-800 flex items-center gap-2 font-medium"
             >
-              {commentData.username}
+              <span className="max-w-28 truncate">{commentData.username}</span>
               {canUserEdit && (
-                <span className="flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-sm text-white">
+                <span className="xs:text-sm flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-xs text-white">
                   you
                 </span>
               )}
