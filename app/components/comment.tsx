@@ -95,7 +95,7 @@ export default function Comment({
             <CommentVoteButtons score={commentData.score} />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex grow flex-col gap-4">
             <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
               Comment by {commentData.username} left{" "}
               <TimeAgo
