@@ -10,7 +10,12 @@ import BaseTextArea from "@/app/components/base-text-area";
 import CommentControls from "@/app/components/comment-controls";
 import CommentDeleteDialog from "@/app/components/comment-delete-dialog";
 import CommentForm from "@/app/components/comment-form";
+import CommentVoteButtons from "@/app/components/comment-vote-buttons";
+import IconButton from "@/app/components/icon-button";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
+import iconDelete from "@/public/icons/icon-delete.svg";
+import iconEdit from "@/public/icons/icon-edit.svg";
+import iconReply from "@/public/icons/icon-reply.svg";
 
 export default function Comment({
   commentData,
@@ -163,13 +168,16 @@ export default function Comment({
                 {commentData.content}
               </p>
 
-              <CommentControls
-                canUserEdit={canUserEdit}
-                onDeleteClick={handleDeleteClick}
-                onEditClick={onEditClick}
-                onReplyClick={onReplyClick}
-                score={commentData.score}
-              />
+              <div className="flex items-center justify-between text-purple-200">
+                <CommentVoteButtons score={commentData.score} />
+
+                <CommentControls
+                  canUserEdit={canUserEdit}
+                  onDeleteClick={handleDeleteClick}
+                  onEditClick={onEditClick}
+                  onReplyClick={onReplyClick}
+                />
+              </div>
             </>
           )}
         </article>
