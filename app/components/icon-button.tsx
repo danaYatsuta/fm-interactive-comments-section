@@ -2,7 +2,7 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
 const colors = {
-  pink: "text-pink-400 outline-pink-400",
+  pink: "text-pink-400 ",
   purple: "text-purple-600",
 };
 
