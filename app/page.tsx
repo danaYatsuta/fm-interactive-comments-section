@@ -1,9 +1,5 @@
-import Image from "next/image";
-
-import BaseButton from "@/app/components/base-button";
-import BaseCard from "@/app/components/base-card";
-import BaseTextArea from "@/app/components/base-text-area";
 import Comment from "@/app/components/comment";
+import CommentForm from "@/app/components/comment-form";
 import commentsData from "@/app/exampleData";
 
 export default function Home() {
@@ -62,27 +58,7 @@ export default function Home() {
         {comments}
       </ul>
 
-      <BaseCard>
-        <form className="flex flex-col gap-4">
-          <BaseTextArea
-            ariaLabel="Write comment"
-            placeholder="Add a comment..."
-          />
-
-          <div className="flex items-center justify-between">
-            <div className="relative size-8">
-              <Image
-                alt=""
-                fill={true}
-                sizes="2rem"
-                src="/avatars/image-juliusomo.webp"
-              />
-            </div>
-
-            <BaseButton text="Send" type="submit" />
-          </div>
-        </form>
-      </BaseCard>
+      <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
     </main>
   );
 }
