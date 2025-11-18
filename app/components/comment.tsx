@@ -100,9 +100,12 @@ export default function Comment({
             />
           </div>
 
-          <p className="text-grey-800 font-medium">{commentData.username}</p>
+          <p aria-hidden="true" className="text-grey-800 font-medium">
+            {commentData.username}
+          </p>
 
           <TimeAgo
+            aria-hidden="true"
             date={commentData.createdAt}
             formatter={timeAgoFormatter}
             minPeriod={60}
