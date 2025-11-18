@@ -101,7 +101,7 @@ export default function Home() {
   });
 
   return (
-    <main className="mx-4 my-8 flex flex-col gap-4">
+    <main className="mx-4 my-8 flex flex-col gap-4 md:mx-auto md:my-16 md:w-184">
       <h1 className="sr-only">
         Frontend Mentor | Interactive comments section
       </h1>
