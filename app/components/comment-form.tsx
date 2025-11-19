@@ -9,12 +9,12 @@ export default function CommentForm({
   onCancelClick,
   showCancelButton = false,
   textAreaPlaceholder,
-}: {
+}: Readonly<{
   buttonText: string;
   onCancelClick?: () => void;
   showCancelButton?: boolean;
   textAreaPlaceholder?: string;
-}) {
+}>) {
   return (
     <BaseCard>
       <form className="flex flex-col gap-4">

@@ -1,10 +1,10 @@
 export default function BaseTextArea({
   defaultValue,
   placeholder,
-}: {
+}: Readonly<{
   defaultValue?: string;
   placeholder?: string;
-}) {
+}>) {
   return (
     <textarea
       aria-label="Comment content"
