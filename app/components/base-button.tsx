@@ -1,7 +1,9 @@
+import { tw } from "@/app/lib/utils";
+
 const colors = {
-  grey: "bg-grey-500 outline-grey-500",
-  pink: "bg-pink-400 outline-pink-400",
-  purple: "bg-purple-600 outline-purple-600",
+  grey: tw`bg-grey-500 outline-grey-500`,
+  pink: tw`bg-pink-400 outline-pink-400`,
+  purple: tw`bg-purple-600 outline-purple-600`,
 };
 
 type Color = keyof typeof colors;

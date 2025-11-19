@@ -1,9 +1,11 @@
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 
+import { tw } from "@/app/lib/utils";
+
 const colors = {
-  pink: "text-pink-400 ",
-  purple: "text-purple-600",
+  pink: tw`text-pink-400`,
+  purple: tw`text-purple-600`,
 };
 
 type Color = keyof typeof colors;
