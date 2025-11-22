@@ -6,7 +6,7 @@ const commentsData = {
       createdAt: "2025-10-15T18:00",
       id: 1,
       replies: [],
-      score: 12,
+      score: 12000,
       user: {
         image: {
           png: "/avatars/image-amyrobson.png",
@@ -54,7 +54,7 @@ const commentsData = {
           },
         },
       ],
-      score: 5,
+      score: 5000,
       user: {
         image: {
           png: "/avatars/image-maxblagun.png",

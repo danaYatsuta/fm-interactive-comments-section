@@ -3,7 +3,7 @@ import IconPlus from "@/app/components/icon-plus";
 
 export default function CommentVoteButtons({
   score,
-}: Readonly<{ score: number }>) {
+}: Readonly<{ score: string }>) {
   return (
     <div className="bg-grey-50 flex h-10 w-25 rounded-xl font-bold md:h-25 md:w-10 md:flex-col">
       <button

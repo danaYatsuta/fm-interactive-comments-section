@@ -52,6 +52,11 @@ export default function Comment({
 
   const formattedDate = dateTimeFormat.format(date);
 
+  const formattedScore =
+    commentData.score >= 1000
+      ? `${Math.round(commentData.score / 1000)}k`
+      : commentData.score.toString();
+
   /* -------------------------------- Handlers -------------------------------- */
 
   const deleteDialog = useRef<HTMLDialogElement>(null);
@@ -92,7 +97,7 @@ export default function Comment({
           id={`comment-${commentData.id}`}
         >
           <div className="hidden md:block">
-            <CommentVoteButtons score={commentData.score} />
+            <CommentVoteButtons score={formattedScore} />
           </div>
 
           <div className="flex grow flex-col gap-4">
@@ -183,7 +188,7 @@ export default function Comment({
                 </p>
 
                 <div className="flex items-center justify-between text-purple-200 md:hidden">
-                  <CommentVoteButtons score={commentData.score} />
+                  <CommentVoteButtons score={formattedScore} />
 
                   <CommentControls
                     canUserEdit={canUserEdit}
