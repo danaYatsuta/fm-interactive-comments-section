@@ -8,7 +8,7 @@ export default function CommentVoteButtons({
     <div className="bg-grey-50 flex h-10 w-25 rounded-xl font-bold md:h-25 md:w-10 md:flex-col">
       <button
         aria-label="Upvote"
-        className="size-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
+        className="size-10 rounded-xl -outline-offset-2 hover:text-purple-600"
         type="button"
       >
         <IconPlus />
@@ -21,7 +21,7 @@ export default function CommentVoteButtons({
 
       <button
         aria-label="Downvote"
-        className="size-10 rounded-xl -outline-offset-2 outline-purple-600 hover:text-purple-600"
+        className="size-10 rounded-xl -outline-offset-2 hover:text-purple-600"
         type="button"
       >
         <IconMinus />

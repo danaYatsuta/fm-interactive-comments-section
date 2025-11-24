@@ -4,7 +4,7 @@ import Image from "next/image";
 import { tw } from "@/app/lib/utils";
 
 const colors = {
-  pink: tw`text-pink-400`,
+  pink: tw`text-pink-400 outline-pink-400`,
   purple: tw`text-purple-600`,
 };
 

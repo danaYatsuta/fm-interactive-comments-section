@@ -2,7 +2,7 @@
 
 @layer base {
   :focus-visible {
-    @apply outline-2 outline-offset-2;
+    @apply outline-2 outline-offset-2 outline-purple-600;
   }
 
   button {
