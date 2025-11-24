@@ -106,7 +106,7 @@ export default function Comment({
             />
           </h2>
 
-          <div className="xs:gap-4 col-span-2 flex items-center gap-2 md:col-span-1">
+          <div className="xs:gap-4 col-span-2 flex items-center gap-2 text-nowrap md:col-span-1">
             <div className="relative size-8">
               <Image
                 alt=""
@@ -138,13 +138,15 @@ export default function Comment({
           </div>
 
           {isEditFormShown ? (
-            <form className="flex flex-col gap-4">
-              <BaseTextArea
-                defaultValue={commentData.content}
-                placeholder="Edit the comment..."
-              />
+            <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
+              <div className="col-span-2">
+                <BaseTextArea
+                  defaultValue={commentData.content}
+                  placeholder="Edit the comment..."
+                />
+              </div>
 
-              <div className="flex justify-end gap-2">
+              <div className="col-start-2 flex justify-end gap-2">
                 <BaseButton
                   color="pink"
                   onClick={onCancelClick}
