@@ -15,50 +15,35 @@ export default function CommentForm({
   showCancelButton?: boolean;
   textAreaPlaceholder?: string;
 }>) {
-  const buttons = (
-    <>
-      {showCancelButton && (
-        <BaseButton
-          color="pink"
-          onClick={onCancelClick}
-          text="Cancel"
-          type="button"
-        />
-      )}
-
-      <BaseButton text={buttonText} type="submit" />
-    </>
-  );
+  /* --------------------------------- Markup --------------------------------- */
 
   return (
     <BaseCard>
-      <form className="flex flex-col gap-4 md:flex-row">
-        <div className="relative hidden size-10 shrink-0 md:block">
+      <form className="grid gap-4 md:flex">
+        <div className="col-span-2 grow">
+          <BaseTextArea placeholder={textAreaPlaceholder} />
+        </div>
+
+        <div className="relative size-8 self-center md:-order-1 md:size-10 md:self-start">
           <Image
             alt=""
             fill={true}
-            sizes="2.5rem"
+            sizes="(min-width: 48rem) 2.5rem, 2rem"
             src="/avatars/image-juliusomo.webp"
           />
         </div>
 
-        <BaseTextArea placeholder={textAreaPlaceholder} />
-
-        <div className="flex items-center justify-between md:hidden">
-          <div className="relative size-8">
-            <Image
-              alt=""
-              fill={true}
-              sizes="2rem"
-              src="/avatars/image-juliusomo.webp"
+        <div className="flex justify-end gap-2 md:flex-col-reverse">
+          {showCancelButton && (
+            <BaseButton
+              color="pink"
+              onClick={onCancelClick}
+              text="Cancel"
+              type="button"
             />
-          </div>
+          )}
 
-          <div className="flex gap-2">{buttons}</div>
-        </div>
-
-        <div className="hidden flex-col-reverse justify-end gap-2 md:flex">
-          {buttons}
+          <BaseButton text={buttonText} type="submit" />
         </div>
       </form>
     </BaseCard>
