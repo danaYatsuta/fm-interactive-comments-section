@@ -162,7 +162,7 @@ export default function Comment({
                   placeholder="Edit the comment..."
                 />
 
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end gap-2">
                   <BaseButton
                     color="pink"
                     onClick={onCancelClick}
