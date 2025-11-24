@@ -86,10 +86,11 @@ export default function Comment({
 
   return (
     <div className="flex flex-col gap-2">
-      {
-        // Using aria-labelledby on visually hidden element instead of aria-label
-        // because there is no way to put time ago inside attribute
-      }
+      {/* 
+        Using aria-labelledby on visually hidden element instead of aria-label
+        because there is no way to put time ago inside attribute
+      */}
+
       <BaseCard>
         <article
           aria-labelledby={`comment-label-${commentData.id}`}
@@ -116,6 +117,8 @@ export default function Comment({
               />
             </div>
 
+            {/* aria-hidden="true" on p and TimeAgo because this text is repeated in h2 above */}
+
             <p
               aria-hidden="true"
               className="text-grey-800 flex items-center gap-2 font-medium"
@@ -138,6 +141,7 @@ export default function Comment({
           </div>
 
           {isEditFormShown ? (
+            // row-start-2 might seem redundant but everything breaks without it for some reason
             <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
               <div className="col-span-2">
                 <BaseTextArea
