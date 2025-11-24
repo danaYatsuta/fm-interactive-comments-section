@@ -169,10 +169,6 @@ export default function Comment({
                 {commentData.content}
               </p>
 
-              <div className="md:row-span-2 md:row-start-1">
-                <CommentVoteButtons score={formattedScore} />
-              </div>
-
               <div className="self-center justify-self-end md:col-start-3 md:row-start-1">
                 <CommentControls
                   canUserEdit={canUserEdit}
@@ -183,6 +179,10 @@ export default function Comment({
               </div>
             </>
           )}
+
+          <div className="col-start-1 row-start-3 md:row-span-2 md:row-start-1">
+            <CommentVoteButtons score={formattedScore} />
+          </div>
         </article>
       </BaseCard>
 
