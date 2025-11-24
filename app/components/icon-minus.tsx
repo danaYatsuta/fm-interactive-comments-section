@@ -1,6 +1,6 @@
 export default function IconMinus() {
   return (
-    <span className="group flex h-full items-center justify-center">
+    <span className="group flex size-10 items-center justify-center">
       <svg
         className="fill-purple-200 transition-[fill] group-hover:fill-purple-600 motion-reduce:transition-none"
         height="3"
