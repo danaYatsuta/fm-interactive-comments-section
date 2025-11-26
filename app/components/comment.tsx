@@ -1,8 +1,7 @@
-"use client";
 import Image from "next/image";
 import TimeAgo from "react-timeago";
 
-import type { Comment } from "@/app/types";
+import type { CommentData } from "@/app/types";
 
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
@@ -21,7 +20,7 @@ export default function Comment({
   onEditClick,
   onReplyClick,
 }: Readonly<{
-  commentData: Comment;
+  commentData: CommentData;
   formState: FormState;
   onCancelEditOrReplyClick: () => void;
   onDeleteClick: () => void;

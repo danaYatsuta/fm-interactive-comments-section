@@ -5,7 +5,7 @@ import BaseButton from "@/app/components/base-button";
 import { tw } from "@/app/lib/utils";
 import { DialogState } from "@/app/reducers/dialogReducer";
 
-export default function AppDialog({
+export default function BaseDialog({
   dialogState,
   onCancelClick,
   onConfirmClick,
