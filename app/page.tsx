@@ -64,11 +64,69 @@ export default function Home() {
   }
 
   function handleEditClick(id: number) {
-    setShownForm({ id, type: "edit" });
+    if (shownForm.id === null) {
+      setShownForm({ id, type: "edit" });
+      return;
+    }
+
+    const nextDialogState: AppDialogProps = {
+      confirmButtonText: "Yes, proceed",
+      heading: shownForm.type === "edit" ? "Discard changes" : "Discard reply",
+      isShown: true,
+      message:
+        shownForm.type === "edit"
+          ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
+          : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
+      onCancelClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+      },
+      onConfirmClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+
+        setShownForm({ id, type: "edit" });
+      },
+    };
+
+    setDialogState(nextDialogState);
   }
 
   function handleReplyClick(id: number) {
-    setShownForm({ id, type: "reply" });
+    if (shownForm.id === null) {
+      setShownForm({ id, type: "reply" });
+      return;
+    }
+
+    const nextDialogState: AppDialogProps = {
+      confirmButtonText: "Yes, proceed",
+      heading: shownForm.type === "edit" ? "Discard changes" : "Discard reply",
+      isShown: true,
+      message:
+        shownForm.type === "edit"
+          ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
+          : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
+      onCancelClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+      },
+      onConfirmClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+
+        setShownForm({ id, type: "reply" });
+      },
+    };
+
+    setDialogState(nextDialogState);
   }
 
   /* --------------------------------- Markup --------------------------------- */
