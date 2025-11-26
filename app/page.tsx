@@ -81,12 +81,7 @@ export default function Home() {
         <li key={reply.id}>
           <Comment
             commentData={reply}
-            isEditFormShown={
-              formState.type === "edit" && reply.id === formState.commentId
-            }
-            isReplyFormShown={
-              formState.type === "reply" && reply.id === formState.commentId
-            }
+            formState={formState}
             onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
             onDeleteClick={handleCommentDeleteClick}
             onEditClick={() => handleEditClick(reply.id)}
@@ -100,12 +95,7 @@ export default function Home() {
       <li key={comment.id}>
         <Comment
           commentData={comment}
-          isEditFormShown={
-            formState.type === "edit" && comment.id === formState.commentId
-          }
-          isReplyFormShown={
-            formState.type === "reply" && comment.id === formState.commentId
-          }
+          formState={formState}
           onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
           onDeleteClick={handleCommentDeleteClick}
           onEditClick={() => handleEditClick(comment.id)}

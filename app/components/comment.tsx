@@ -11,19 +11,18 @@ import CommentControls from "@/app/components/comment-controls";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
+import { FormState } from "@/app/reducers/formReducer";
 
 export default function Comment({
   commentData,
-  isEditFormShown,
-  isReplyFormShown,
+  formState,
   onCancelEditOrReplyClick,
   onDeleteClick,
   onEditClick,
   onReplyClick,
 }: Readonly<{
   commentData: Comment;
-  isEditFormShown: boolean;
-  isReplyFormShown: boolean;
+  formState: FormState;
   onCancelEditOrReplyClick: () => void;
   onDeleteClick: () => void;
   onEditClick: () => void;
@@ -48,6 +47,12 @@ export default function Comment({
     commentData.score >= 1000
       ? `${Math.round(commentData.score / 1000)}k`
       : commentData.score.toString();
+
+  const isEditFormOpen =
+    formState.type === "edit" && formState.commentId === commentData.id;
+
+  const isReplyFormOpen =
+    formState.type === "reply" && formState.commentId === commentData.id;
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -107,7 +112,7 @@ export default function Comment({
             />
           </div>
 
-          {isEditFormShown ? (
+          {isEditFormOpen ? (
             // row-start-2 might seem redundant but everything breaks without it for some reason
             <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
               <div className="col-span-2">
@@ -159,7 +164,7 @@ export default function Comment({
         </article>
       </BaseCard>
 
-      {isReplyFormShown && (
+      {isReplyFormOpen && (
         <CommentForm
           buttonText="Reply"
           onCancelClick={onCancelEditOrReplyClick}

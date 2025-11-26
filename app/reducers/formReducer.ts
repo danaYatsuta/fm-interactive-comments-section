@@ -1,3 +1,9 @@
+export interface FormState {
+  commentId: null | number;
+  textAreaValue: string;
+  type: "edit" | "reply" | null;
+}
+
 type FormAction =
   | {
       commentContent: string;
@@ -12,12 +18,6 @@ type FormAction =
   | {
       type: "close";
     };
-
-interface FormState {
-  commentId: null | number;
-  textAreaValue: string;
-  type: "edit" | "reply" | null;
-}
 
 export default function formReducer(
   state: FormState,
