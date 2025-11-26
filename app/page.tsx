@@ -1,67 +1,44 @@
 "use client";
 
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 import AppDialog from "@/app/components/app-dialog";
-import { AppDialogProps } from "@/app/components/app-dialog";
 import Comment from "@/app/components/comment";
 import CommentForm from "@/app/components/comment-form";
 import commentsData from "@/app/exampleData";
+import dialogReducer from "@/app/reducers/dialogReducer";
 import formReducer from "@/app/reducers/formReducer";
 
 export default function Home() {
   /* ---------------------------------- State --------------------------------- */
 
-  // Info about shown edit or reply form; only one edit or reply form can be shown at once
+  // Info about open edit or reply form; only one edit or reply form can be shown at once
 
-  const [form, formDispatch] = useReducer(formReducer, {
+  const [formState, formDispatch] = useReducer(formReducer, {
     commentId: null,
     textAreaValue: "",
     type: null,
   });
 
-  const [dialogState, setDialogState] = useState<AppDialogProps>({
+  const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
     confirmButtonText: "",
     heading: "",
-    isShown: false,
+    isOpen: false,
     message: "",
-    onCancelClick: () => {},
-    onConfirmClick: () => {},
   });
 
   /* -------------------------------- Handlers -------------------------------- */
 
-  function handleCancelEditOrReplyClick() {
+  function handleCommentCancelEditOrReplyClick() {
     formDispatch({ type: "close" });
   }
 
-  // Very terrible but not sure how to refactor yet
-  function handleDeleteClick() {
-    const nextDialogState: AppDialogProps = {
-      confirmButtonText: "Yes, delete",
-      heading: "Delete comment",
-      isShown: true,
-      message:
-        "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
-      onCancelClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
-      },
-      onConfirmClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
-      },
-    };
-
-    setDialogState(nextDialogState);
+  function handleCommentDeleteClick() {
+    dialogDispatch({ type: "open_comment_delete_confirmation" });
   }
 
   function handleEditClick(id: number) {
-    if (form.commentId === null) {
+    if (formState.type === null) {
       formDispatch({
         commentContent: commentsData.comments[id].content,
         commentId: id,
@@ -70,68 +47,30 @@ export default function Home() {
       return;
     }
 
-    const nextDialogState: AppDialogProps = {
-      confirmButtonText: "Yes, proceed",
-      heading: form.type === "edit" ? "Discard changes" : "Discard reply",
-      isShown: true,
-      message:
-        form.type === "edit"
-          ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
-          : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
-      onCancelClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
-      },
-      onConfirmClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
-
-        formDispatch({
-          commentContent: commentsData.comments[id].content,
-          commentId: id,
-          type: "open_edit",
-        });
-      },
-    };
-
-    setDialogState(nextDialogState);
+    dialogDispatch({
+      formType: formState.type,
+      type: "open_discard_confirmation",
+    });
   }
 
-  function handleReplyClick(id: number) {
-    if (form.commentId === null) {
+  function handleCommentReplyClick(id: number) {
+    if (formState.type === null) {
       formDispatch({ commentId: id, type: "open_reply" });
       return;
     }
 
-    const nextDialogState: AppDialogProps = {
-      confirmButtonText: "Yes, proceed",
-      heading: form.type === "edit" ? "Discard changes" : "Discard reply",
-      isShown: true,
-      message:
-        form.type === "edit"
-          ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
-          : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
-      onCancelClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
-      },
-      onConfirmClick: () => {
-        setDialogState({
-          ...nextDialogState,
-          isShown: false,
-        });
+    dialogDispatch({
+      formType: formState.type,
+      type: "open_discard_confirmation",
+    });
+  }
 
-        formDispatch({ commentId: id, type: "open_reply" });
-      },
-    };
+  function handleDialogCancelClick() {
+    dialogDispatch({ type: "close" });
+  }
 
-    setDialogState(nextDialogState);
+  function handleDialogConfirmClick() {
+    dialogDispatch({ type: "close" });
   }
 
   /* --------------------------------- Markup --------------------------------- */
@@ -143,15 +82,15 @@ export default function Home() {
           <Comment
             commentData={reply}
             isEditFormShown={
-              form.type === "edit" && reply.id === form.commentId
+              formState.type === "edit" && reply.id === formState.commentId
             }
             isReplyFormShown={
-              form.type === "reply" && reply.id === form.commentId
+              formState.type === "reply" && reply.id === formState.commentId
             }
-            onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
-            onDeleteClick={handleDeleteClick}
+            onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
+            onDeleteClick={handleCommentDeleteClick}
             onEditClick={() => handleEditClick(reply.id)}
-            onReplyClick={() => handleReplyClick(reply.id)}
+            onReplyClick={() => handleCommentReplyClick(reply.id)}
           />
         </li>
       );
@@ -162,15 +101,15 @@ export default function Home() {
         <Comment
           commentData={comment}
           isEditFormShown={
-            form.type === "edit" && comment.id === form.commentId
+            formState.type === "edit" && comment.id === formState.commentId
           }
           isReplyFormShown={
-            form.type === "reply" && comment.id === form.commentId
+            formState.type === "reply" && comment.id === formState.commentId
           }
-          onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
-          onDeleteClick={handleDeleteClick}
+          onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
+          onDeleteClick={handleCommentDeleteClick}
           onEditClick={() => handleEditClick(comment.id)}
-          onReplyClick={() => handleReplyClick(comment.id)}
+          onReplyClick={() => handleCommentReplyClick(comment.id)}
         />
 
         {replies?.length !== 0 && (
@@ -197,7 +136,11 @@ export default function Home() {
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
 
-      <AppDialog {...dialogState} />
+      <AppDialog
+        dialogState={dialogState}
+        onCancelClick={handleDialogCancelClick}
+        onConfirmClick={handleDialogConfirmClick}
+      />
     </main>
   );
 }
