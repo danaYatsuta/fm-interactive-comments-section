@@ -10,7 +10,7 @@ const colors = {
 
 type Color = keyof typeof colors;
 
-export default function IconButton({
+export default function ButtonIcon({
   color = "purple",
   icon,
   onClick,

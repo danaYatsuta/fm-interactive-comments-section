@@ -3,9 +3,9 @@ import TimeAgo from "react-timeago";
 
 import type { CommentData } from "@/app/types";
 
-import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
+import ButtonFilled from "@/app/components/button-filled";
 import CommentControls from "@/app/components/comment-controls";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
@@ -122,13 +122,13 @@ export default function Comment({
               </div>
 
               <div className="col-start-2 flex justify-end gap-2">
-                <BaseButton
+                <ButtonFilled
                   color="pink"
                   onClick={onCancelEditOrReplyClick}
                   text="Cancel"
                 />
 
-                <BaseButton text="Update" type="submit" />
+                <ButtonFilled text="Update" type="submit" />
               </div>
             </form>
           ) : (

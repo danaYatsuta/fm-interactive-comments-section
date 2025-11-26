@@ -1,7 +1,7 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEffect, useRef } from "react";
 
-import BaseButton from "@/app/components/base-button";
+import ButtonFilled from "@/app/components/button-filled";
 import { tw } from "@/app/lib/utils";
 import { DialogState } from "@/app/reducers/dialogReducer";
 
@@ -50,14 +50,14 @@ export default function BaseDialog({
         <p>{dialogState.message}</p>
 
         <div className="flex gap-3">
-          <BaseButton
+          <ButtonFilled
             color="grey"
             grow
             onClick={onCancelClick}
             text="No, cancel"
           />
 
-          <BaseButton
+          <ButtonFilled
             color="pink"
             grow
             onClick={onConfirmClick}

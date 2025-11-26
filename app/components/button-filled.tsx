@@ -8,7 +8,7 @@ const colors = {
 
 type Color = keyof typeof colors;
 
-export default function BaseButton({
+export default function ButtonFilled({
   color = "purple",
   grow = false,
   onClick,

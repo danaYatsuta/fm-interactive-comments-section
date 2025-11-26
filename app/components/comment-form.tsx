@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import BaseButton from "@/app/components/base-button";
+import ButtonFilled from "@/app/components/button-filled";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import commentsData from "@/app/exampleData";
@@ -36,7 +36,7 @@ export default function CommentForm({
 
         <div className="flex justify-end gap-2 md:flex-col-reverse">
           {showCancelButton && (
-            <BaseButton
+            <ButtonFilled
               color="pink"
               onClick={onCancelClick}
               text="Cancel"
@@ -44,7 +44,7 @@ export default function CommentForm({
             />
           )}
 
-          <BaseButton text={buttonText} type="submit" />
+          <ButtonFilled text={buttonText} type="submit" />
         </div>
       </form>
     </BaseCard>
