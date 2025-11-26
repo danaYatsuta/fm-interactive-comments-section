@@ -1,25 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 import AppDialog from "@/app/components/app-dialog";
 import { AppDialogProps } from "@/app/components/app-dialog";
 import Comment from "@/app/components/comment";
 import CommentForm from "@/app/components/comment-form";
 import commentsData from "@/app/exampleData";
-
-interface ShownForm {
-  id: null | number;
-  type: "edit" | "reply" | null;
-}
+import formReducer from "@/app/reducers/formReducer";
 
 export default function Home() {
   /* ---------------------------------- State --------------------------------- */
 
   // Info about shown edit or reply form; only one edit or reply form can be shown at once
-  // id is the id of comment that is being replied to or edited
-  const [shownForm, setShownForm] = useState<ShownForm>({
-    id: null,
+
+  const [form, formDispatch] = useReducer(formReducer, {
+    commentId: null,
+    textAreaValue: "",
     type: null,
   });
 
@@ -35,7 +32,7 @@ export default function Home() {
   /* -------------------------------- Handlers -------------------------------- */
 
   function handleCancelEditOrReplyClick() {
-    setShownForm({ id: null, type: null });
+    formDispatch({ type: "close" });
   }
 
   // Very terrible but not sure how to refactor yet
@@ -64,17 +61,21 @@ export default function Home() {
   }
 
   function handleEditClick(id: number) {
-    if (shownForm.id === null) {
-      setShownForm({ id, type: "edit" });
+    if (form.commentId === null) {
+      formDispatch({
+        commentContent: commentsData.comments[id].content,
+        commentId: id,
+        type: "open_edit",
+      });
       return;
     }
 
     const nextDialogState: AppDialogProps = {
       confirmButtonText: "Yes, proceed",
-      heading: shownForm.type === "edit" ? "Discard changes" : "Discard reply",
+      heading: form.type === "edit" ? "Discard changes" : "Discard reply",
       isShown: true,
       message:
-        shownForm.type === "edit"
+        form.type === "edit"
           ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
           : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
       onCancelClick: () => {
@@ -89,7 +90,11 @@ export default function Home() {
           isShown: false,
         });
 
-        setShownForm({ id, type: "edit" });
+        formDispatch({
+          commentContent: commentsData.comments[id].content,
+          commentId: id,
+          type: "open_edit",
+        });
       },
     };
 
@@ -97,17 +102,17 @@ export default function Home() {
   }
 
   function handleReplyClick(id: number) {
-    if (shownForm.id === null) {
-      setShownForm({ id, type: "reply" });
+    if (form.commentId === null) {
+      formDispatch({ commentId: id, type: "open_reply" });
       return;
     }
 
     const nextDialogState: AppDialogProps = {
       confirmButtonText: "Yes, proceed",
-      heading: shownForm.type === "edit" ? "Discard changes" : "Discard reply",
+      heading: form.type === "edit" ? "Discard changes" : "Discard reply",
       isShown: true,
       message:
-        shownForm.type === "edit"
+        form.type === "edit"
           ? "Are you sure you want to stop editing this comment? This will discard the comment changes and can't be undone."
           : "Are you sure you want to stop replying? This will discard the reply draft and can't be undone.",
       onCancelClick: () => {
@@ -122,7 +127,7 @@ export default function Home() {
           isShown: false,
         });
 
-        setShownForm({ id, type: "reply" });
+        formDispatch({ commentId: id, type: "open_reply" });
       },
     };
 
@@ -138,10 +143,10 @@ export default function Home() {
           <Comment
             commentData={reply}
             isEditFormShown={
-              shownForm.type === "edit" && reply.id === shownForm.id
+              form.type === "edit" && reply.id === form.commentId
             }
             isReplyFormShown={
-              shownForm.type === "reply" && reply.id === shownForm.id
+              form.type === "reply" && reply.id === form.commentId
             }
             onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
             onDeleteClick={handleDeleteClick}
@@ -157,10 +162,10 @@ export default function Home() {
         <Comment
           commentData={comment}
           isEditFormShown={
-            shownForm.type === "edit" && comment.id === shownForm.id
+            form.type === "edit" && comment.id === form.commentId
           }
           isReplyFormShown={
-            shownForm.type === "reply" && comment.id === shownForm.id
+            form.type === "reply" && comment.id === form.commentId
           }
           onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
           onDeleteClick={handleDeleteClick}
