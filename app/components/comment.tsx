@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useRef } from "react";
 import TimeAgo from "react-timeago";
 
+import AppDialog from "@/app/components/app-dialog";
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import CommentControls from "@/app/components/comment-controls";
-import CommentDeleteDialog from "@/app/components/comment-delete-dialog";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
@@ -201,7 +201,7 @@ export default function Comment({
         />
       )}
 
-      <CommentDeleteDialog
+      <AppDialog
         onCancelClick={handleDeleteCancelClick}
         onConfirmClick={handleDeleteConfirmClick}
         ref={deleteDialog}

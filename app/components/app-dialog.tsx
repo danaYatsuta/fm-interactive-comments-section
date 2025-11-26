@@ -1,7 +1,7 @@
 import BaseButton from "@/app/components/base-button";
 import { tw } from "@/app/lib/utils";
 
-export default function CommentDeleteDialog({
+export default function AppDialog({
   onCancelClick,
   onConfirmClick,
   ref,
