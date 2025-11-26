@@ -1,19 +1,18 @@
-const commentsData = {
+import { Comment } from "@/app/types";
+
+const commentsData: {
+  comments: Comment[];
+  currentUser: Pick<Comment, "userAvatar" | "username">;
+} = {
   comments: [
     {
       content:
         "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
       createdAt: "2025-10-15T18:00",
       id: 1,
-      replies: [],
       score: 12000,
-      user: {
-        image: {
-          png: "/avatars/image-amyrobson.png",
-          webp: "/avatars/image-amyrobson.webp",
-        },
-        username: "amyrobson",
-      },
+      userAvatar: "/avatars/image-amyrobson.webp",
+      username: "amyrobson",
     },
     {
       content:
@@ -27,15 +26,10 @@ const commentsData = {
           createdAt: "2025-11-07T14:00",
           id: 3,
           replyingToId: 2,
-          replyingToUser: "maxblagun",
+          replyingToUsername: "maxblagun",
           score: 4,
-          user: {
-            image: {
-              png: "/avatars/image-ramsesmiron.png",
-              webp: "/avatars/image-ramsesmiron.webp",
-            },
-            username: "ramsesmiron",
-          },
+          userAvatar: "/avatars/image-ramsesmiron.webp",
+          username: "ramsesmiron",
         },
         {
           content:
@@ -43,32 +37,19 @@ const commentsData = {
           createdAt: "2025-11-13T15:00",
           id: 4,
           replyingToId: 3,
-          replyingToUser: "ramsesmiron",
+          replyingToUsername: "ramsesmiron",
           score: 2,
-          user: {
-            image: {
-              png: "/avatars/image-juliusomo.png",
-              webp: "/avatars/image-juliusomo.webp",
-            },
-            username: "juliusomo",
-          },
+          userAvatar: "/avatars/image-juliusomo.webp",
+          username: "juliusomo",
         },
       ],
       score: 5000,
-      user: {
-        image: {
-          png: "/avatars/image-maxblagun.png",
-          webp: "/avatars/image-maxblagun.webp",
-        },
-        username: "maxblagun",
-      },
+      userAvatar: "/avatars/image-maxblagun.webp",
+      username: "maxblagun",
     },
   ],
   currentUser: {
-    image: {
-      png: "/avatars/image-juliusomo.png",
-      webp: "/avatars/image-juliusomo.webp",
-    },
+    userAvatar: "/avatars/image-juliusomo.webp",
     username: "juliusomo",
   },
 };

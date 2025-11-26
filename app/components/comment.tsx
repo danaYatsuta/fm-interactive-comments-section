@@ -2,6 +2,8 @@
 import Image from "next/image";
 import TimeAgo from "react-timeago";
 
+import type { Comment } from "@/app/types";
+
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
@@ -19,16 +21,7 @@ export default function Comment({
   onEditClick,
   onReplyClick,
 }: Readonly<{
-  commentData: {
-    content: string;
-    createdAt: string;
-    id: number;
-    replyingToId?: number;
-    replyingToUser?: string;
-    score: number;
-    userImageSrc: string;
-    username: string;
-  };
+  commentData: Comment;
   isEditFormShown: boolean;
   isReplyFormShown: boolean;
   onCancelEditOrReplyClick: () => void;
@@ -87,7 +80,7 @@ export default function Comment({
                 alt=""
                 fill={true}
                 sizes="2rem"
-                src={commentData.userImageSrc}
+                src={commentData.userAvatar}
               />
             </div>
 
@@ -137,13 +130,13 @@ export default function Comment({
           ) : (
             <>
               <p className="col-span-2">
-                {commentData.replyingToUser && (
+                {commentData.replyingToUsername && (
                   <a
                     aria-label="Jump to parent comment"
                     className="rounded-sm font-medium text-purple-600 hover:underline"
                     href={`#comment-${commentData.replyingToId}`}
                   >
-                    @{commentData.replyingToUser}
+                    @{commentData.replyingToUsername}
                   </a>
                 )}{" "}
                 {commentData.content}

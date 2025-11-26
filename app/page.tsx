@@ -132,20 +132,11 @@ export default function Home() {
   /* --------------------------------- Markup --------------------------------- */
 
   const comments = commentsData.comments.map((comment) => {
-    const replies = comment.replies.map((reply) => {
+    const replies = comment.replies?.map((reply) => {
       return (
         <li key={reply.id}>
           <Comment
-            commentData={{
-              content: reply.content,
-              createdAt: reply.createdAt,
-              id: reply.id,
-              replyingToId: reply.replyingToId,
-              replyingToUser: reply.replyingToUser,
-              score: reply.score,
-              userImageSrc: reply.user.image.webp,
-              username: reply.user.username,
-            }}
+            commentData={reply}
             isEditFormShown={
               shownForm.type === "edit" && reply.id === shownForm.id
             }
@@ -164,14 +155,7 @@ export default function Home() {
     return (
       <li key={comment.id}>
         <Comment
-          commentData={{
-            content: comment.content,
-            createdAt: comment.createdAt,
-            id: comment.id,
-            score: comment.score,
-            userImageSrc: comment.user.image.webp,
-            username: comment.user.username,
-          }}
+          commentData={comment}
           isEditFormShown={
             shownForm.type === "edit" && comment.id === shownForm.id
           }
@@ -184,7 +168,7 @@ export default function Home() {
           onReplyClick={() => handleReplyClick(comment.id)}
         />
 
-        {replies.length !== 0 && (
+        {replies?.length !== 0 && (
           <ul
             aria-label="Replies"
             className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"

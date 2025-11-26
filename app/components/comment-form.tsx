@@ -3,6 +3,7 @@ import Image from "next/image";
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
+import commentsData from "@/app/exampleData";
 
 export default function CommentForm({
   buttonText,
@@ -29,7 +30,7 @@ export default function CommentForm({
             alt=""
             fill={true}
             sizes="(min-width: 48rem) 2.5rem, 2rem"
-            src="/avatars/image-juliusomo.webp"
+            src={commentsData.currentUser.userAvatar}
           />
         </div>
 
