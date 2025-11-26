@@ -1,10 +1,7 @@
 "use client";
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import Image from "next/image";
-import { useRef } from "react";
 import TimeAgo from "react-timeago";
 
-import AppDialog from "@/app/components/app-dialog";
 import BaseButton from "@/app/components/base-button";
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
@@ -17,7 +14,8 @@ export default function Comment({
   commentData,
   isEditFormShown,
   isReplyFormShown,
-  onCancelClick,
+  onCancelEditOrReplyClick,
+  onDeleteClick,
   onEditClick,
   onReplyClick,
 }: Readonly<{
@@ -33,7 +31,8 @@ export default function Comment({
   };
   isEditFormShown: boolean;
   isReplyFormShown: boolean;
-  onCancelClick: () => void;
+  onCancelEditOrReplyClick: () => void;
+  onDeleteClick: () => void;
   onEditClick: () => void;
   onReplyClick: () => void;
 }>) {
@@ -56,31 +55,6 @@ export default function Comment({
     commentData.score >= 1000
       ? `${Math.round(commentData.score / 1000)}k`
       : commentData.score.toString();
-
-  /* -------------------------------- Handlers -------------------------------- */
-
-  const deleteDialog = useRef<HTMLDialogElement>(null);
-
-  function handleDeleteClick() {
-    if (deleteDialog.current === null) return;
-
-    deleteDialog.current.showModal();
-    disableBodyScroll(deleteDialog.current);
-  }
-
-  function handleDeleteCancelClick() {
-    if (deleteDialog.current === null) return;
-
-    deleteDialog.current.close();
-    enableBodyScroll(deleteDialog.current);
-  }
-
-  function handleDeleteConfirmClick() {
-    if (deleteDialog.current === null) return;
-
-    deleteDialog.current.close();
-    enableBodyScroll(deleteDialog.current);
-  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -153,7 +127,7 @@ export default function Comment({
               <div className="col-start-2 flex justify-end gap-2">
                 <BaseButton
                   color="pink"
-                  onClick={onCancelClick}
+                  onClick={onCancelEditOrReplyClick}
                   text="Cancel"
                 />
 
@@ -178,7 +152,7 @@ export default function Comment({
               <div className="self-center justify-self-end md:col-start-3 md:row-start-1">
                 <CommentControls
                   canUserEdit={canUserEdit}
-                  onDeleteClick={handleDeleteClick}
+                  onDeleteClick={onDeleteClick}
                   onEditClick={onEditClick}
                   onReplyClick={onReplyClick}
                 />
@@ -195,17 +169,11 @@ export default function Comment({
       {isReplyFormShown && (
         <CommentForm
           buttonText="Reply"
-          onCancelClick={onCancelClick}
+          onCancelClick={onCancelEditOrReplyClick}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
         />
       )}
-
-      <AppDialog
-        onCancelClick={handleDeleteCancelClick}
-        onConfirmClick={handleDeleteConfirmClick}
-        ref={deleteDialog}
-      />
     </div>
   );
 }

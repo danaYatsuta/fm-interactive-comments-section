@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import AppDialog from "@/app/components/app-dialog";
+import { AppDialogProps } from "@/app/components/app-dialog";
 import Comment from "@/app/components/comment";
 import CommentForm from "@/app/components/comment-form";
 import commentsData from "@/app/exampleData";
@@ -21,18 +23,52 @@ export default function Home() {
     type: null,
   });
 
+  const [dialogState, setDialogState] = useState<AppDialogProps>({
+    confirmButtonText: "",
+    heading: "",
+    isShown: false,
+    message: "",
+    onCancelClick: () => {},
+    onConfirmClick: () => {},
+  });
+
   /* -------------------------------- Handlers -------------------------------- */
 
-  function handleReplyClick(id: number) {
-    setShownForm({ id, type: "reply" });
+  function handleCancelEditOrReplyClick() {
+    setShownForm({ id: null, type: null });
+  }
+
+  // Very terrible but not sure how to refactor yet
+  function handleDeleteClick() {
+    const nextDialogState: AppDialogProps = {
+      confirmButtonText: "Yes, delete",
+      heading: "Delete comment",
+      isShown: true,
+      message:
+        "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
+      onCancelClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+      },
+      onConfirmClick: () => {
+        setDialogState({
+          ...nextDialogState,
+          isShown: false,
+        });
+      },
+    };
+
+    setDialogState(nextDialogState);
   }
 
   function handleEditClick(id: number) {
     setShownForm({ id, type: "edit" });
   }
 
-  function handleCancelClick() {
-    setShownForm({ id: null, type: null });
+  function handleReplyClick(id: number) {
+    setShownForm({ id, type: "reply" });
   }
 
   /* --------------------------------- Markup --------------------------------- */
@@ -58,7 +94,8 @@ export default function Home() {
             isReplyFormShown={
               shownForm.type === "reply" && reply.id === shownForm.id
             }
-            onCancelClick={handleCancelClick}
+            onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
+            onDeleteClick={handleDeleteClick}
             onEditClick={() => handleEditClick(reply.id)}
             onReplyClick={() => handleReplyClick(reply.id)}
           />
@@ -83,7 +120,8 @@ export default function Home() {
           isReplyFormShown={
             shownForm.type === "reply" && comment.id === shownForm.id
           }
-          onCancelClick={handleCancelClick}
+          onCancelEditOrReplyClick={handleCancelEditOrReplyClick}
+          onDeleteClick={handleDeleteClick}
           onEditClick={() => handleEditClick(comment.id)}
           onReplyClick={() => handleReplyClick(comment.id)}
         />
@@ -111,6 +149,8 @@ export default function Home() {
       </ul>
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
+
+      <AppDialog {...dialogState} />
     </main>
   );
 }
