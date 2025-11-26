@@ -9,7 +9,7 @@ import commentsData from "@/app/exampleData";
 import dialogReducer from "@/app/reducers/dialogReducer";
 import formReducer from "@/app/reducers/formReducer";
 
-export default function Home() {
+export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
   // Info about open edit or reply form; only one edit or reply form can be shown at once
