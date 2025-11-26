@@ -6,16 +6,6 @@ export interface DialogState {
   onConfirm: () => void;
 }
 
-// type DialogAction = { confirmCallback: () => void } & (
-//   | {
-//       formType: "edit" | "reply";
-//       type: "open_discard_confirmation";
-//     }
-//   | {
-//       type: "close" | "open_comment_delete_confirmation";
-//     }
-// );
-
 type DialogAction =
   | {
       formType: "edit" | "reply";
