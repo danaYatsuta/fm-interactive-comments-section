@@ -31,6 +31,7 @@ export default function dialogReducer(
         isOpen: false,
       };
     }
+
     case "open_comment_delete_confirmation": {
       return {
         confirmButtonText: "Yes, delete",
@@ -41,6 +42,7 @@ export default function dialogReducer(
         onConfirm: action.onConfirm,
       };
     }
+
     case "open_discard_confirmation": {
       return {
         confirmButtonText: "Yes, discard",
