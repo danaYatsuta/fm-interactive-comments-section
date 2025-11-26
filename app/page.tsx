@@ -25,6 +25,7 @@ export default function App() {
     heading: "",
     isOpen: false,
     message: "",
+    onConfirm: () => {},
   });
 
   /* ------------------------------ Derived State ----------------------------- */
@@ -39,40 +40,56 @@ export default function App() {
     formDispatch({ type: "close" });
   }
 
-  function handleCommentDeleteClick() {
-    dialogDispatch({ type: "open_comment_delete_confirmation" });
+  function handleCommentDeleteClick(commentId: number) {
+    dialogDispatch({
+      onConfirm: () => {
+        console.log(`Deleting comment with id ${commentId}`);
+      },
+      type: "open_comment_delete_confirmation",
+    });
   }
 
-  function handleEditClick(id: number) {
-    if (formState.type === null) {
+  function handleEditClick(commentId: number) {
+    function openEditForm() {
       const comment = commentsData.comments.find(
-        (comment) => comment.id === id,
+        (comment) => comment.id === commentId,
       );
 
       if (comment === undefined) return;
 
       formDispatch({
         commentContent: comment.content,
-        commentId: id,
+        commentId,
         type: "open_edit",
       });
-      return;
     }
 
-    dialogDispatch({
-      formType: formState.type,
-      type: "open_discard_confirmation",
-    });
+    if (formState.type === null) {
+      openEditForm();
+    } else {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: openEditForm,
+        type: "open_discard_confirmation",
+      });
+    }
   }
 
-  function handleCommentReplyClick(id: number) {
+  function handleCommentReplyClick(commentId: number) {
+    function openReplyForm() {
+      formDispatch({ commentId, type: "open_reply" });
+    }
+
     if (formState.type === null) {
-      formDispatch({ commentId: id, type: "open_reply" });
+      openReplyForm();
       return;
     }
 
     dialogDispatch({
       formType: formState.type,
+      onConfirm: () => {
+        openReplyForm();
+      },
       type: "open_discard_confirmation",
     });
   }
@@ -82,6 +99,7 @@ export default function App() {
   }
 
   function handleDialogConfirmClick() {
+    dialogState.onConfirm();
     dialogDispatch({ type: "close" });
   }
 
@@ -100,7 +118,7 @@ export default function App() {
             commentData={reply}
             formState={formState}
             onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
-            onDeleteClick={handleCommentDeleteClick}
+            onDeleteClick={() => handleCommentDeleteClick(reply.id)}
             onEditClick={() => handleEditClick(reply.id)}
             onReplyClick={() => handleCommentReplyClick(reply.id)}
           />
@@ -114,7 +132,7 @@ export default function App() {
           commentData={topLevelComment}
           formState={formState}
           onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
-          onDeleteClick={handleCommentDeleteClick}
+          onDeleteClick={() => handleCommentDeleteClick(topLevelComment.id)}
           onEditClick={() => handleEditClick(topLevelComment.id)}
           onReplyClick={() => handleCommentReplyClick(topLevelComment.id)}
         />
