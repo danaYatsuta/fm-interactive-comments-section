@@ -1,10 +1,16 @@
-export interface Comment {
+export type Comment =
+  | (CommentBase & { isReply: false })
+  | (CommentBase & {
+      isReply: true;
+      parentCommentId: number;
+      replyingToId: number;
+      replyingToUsername: string;
+    });
+
+interface CommentBase {
   content: string;
   createdAt: string;
   id: number;
-  replies?: Comment[];
-  replyingToId?: number;
-  replyingToUsername?: string;
   score: number;
   userAvatar: string;
   username: string;

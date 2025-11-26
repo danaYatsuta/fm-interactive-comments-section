@@ -135,7 +135,7 @@ export default function Comment({
           ) : (
             <>
               <p className="col-span-2">
-                {commentData.replyingToUsername && (
+                {commentData.isReply && (
                   <a
                     aria-label="Jump to parent comment"
                     className="rounded-sm font-medium text-purple-600 hover:underline"
