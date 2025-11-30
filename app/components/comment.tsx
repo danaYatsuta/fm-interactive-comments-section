@@ -1,5 +1,4 @@
 import Image from "next/image";
-import TimeAgo from "react-timeago";
 
 import type { CommentData } from "@/app/types";
 
@@ -9,8 +8,8 @@ import ButtonFilled from "@/app/components/button-filled";
 import CommentControls from "@/app/components/comment-controls";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
+import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
 import { FormState } from "@/app/lib/reducers/formReducer";
-import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
 
 export default function Comment({
   commentData,
@@ -33,14 +32,6 @@ export default function Comment({
   // Replace with actual check when auth is implemented
 
   const canUserEdit = commentData.username === "juliusomo";
-
-  const date = new Date(commentData.createdAt);
-  const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
-  });
-
-  const formattedDate = dateTimeFormat.format(date);
 
   const formattedScore =
     commentData.score >= 1000
@@ -70,12 +61,7 @@ export default function Comment({
         >
           <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
             Comment by {commentData.username} left{" "}
-            <TimeAgo
-              date={commentData.createdAt}
-              formatter={timeAgoFormatter}
-              minPeriod={60}
-              title={formattedDate}
-            />
+            <TimeAgoWrapper date={commentData.createdAt} />
           </h2>
 
           <div className="xs:gap-4 col-span-2 flex items-center gap-2 text-nowrap md:col-span-1">
@@ -102,13 +88,7 @@ export default function Comment({
               )}
             </p>
 
-            <TimeAgo
-              aria-hidden="true"
-              date={commentData.createdAt}
-              formatter={timeAgoFormatter}
-              minPeriod={60}
-              title={formattedDate}
-            />
+            <TimeAgoWrapper date={commentData.createdAt} />
           </div>
 
           {isEditFormOpen ? (
