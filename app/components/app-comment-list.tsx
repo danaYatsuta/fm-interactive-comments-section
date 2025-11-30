@@ -4,8 +4,8 @@ import { useReducer } from "react";
 
 import BaseDialog from "@/app/components/base-dialog";
 import Comment from "@/app/components/comment";
-import dialogReducer from "@/app/reducers/dialogReducer";
-import formReducer from "@/app/reducers/formReducer";
+import dialogReducer from "@/app/lib/reducers/dialogReducer";
+import formReducer from "@/app/lib/reducers/formReducer";
 import { CommentData } from "@/app/types";
 
 export default function AppCommentList({

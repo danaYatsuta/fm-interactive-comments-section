@@ -9,8 +9,8 @@ import ButtonFilled from "@/app/components/button-filled";
 import CommentControls from "@/app/components/comment-controls";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
+import { FormState } from "@/app/lib/reducers/formReducer";
 import timeAgoFormatter from "@/app/lib/timeAgoFormatter";
-import { FormState } from "@/app/reducers/formReducer";
 
 export default function Comment({
   commentData,

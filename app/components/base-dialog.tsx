@@ -2,8 +2,8 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEffect, useRef } from "react";
 
 import ButtonFilled from "@/app/components/button-filled";
+import { DialogState } from "@/app/lib/reducers/dialogReducer";
 import { tw } from "@/app/lib/utils";
-import { DialogState } from "@/app/reducers/dialogReducer";
 
 export default function BaseDialog({
   dialogState,
