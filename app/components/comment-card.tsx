@@ -43,19 +43,10 @@ export default function CommentCard({
 
   /* -------------------------------- Handlers -------------------------------- */
 
-  function shouldAskForConfirmation(): boolean {
-    switch (formState.type) {
-      case "edit": {
-        return formState.textAreaValue !== comment.content;
-      }
-      case null: {
-        return false;
-      }
-      case "reply": {
-        return formState.textAreaValue !== "";
-      }
-    }
-  }
+  const shouldAskForConfirmation =
+    (formState.type === "edit" &&
+      formState.textAreaValue !== comment.content) ||
+    (formState.type === "reply" && formState.textAreaValue !== "");
 
   function handleFormTextAreaValueChange(
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -71,7 +62,7 @@ export default function CommentCard({
       formDispatch({ type: "close" });
     }
 
-    if (formState.type !== null && shouldAskForConfirmation()) {
+    if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
         formType: formState.type,
         onConfirm: closeForm,
@@ -100,7 +91,7 @@ export default function CommentCard({
       });
     }
 
-    if (formState.type !== null && shouldAskForConfirmation()) {
+    if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
         formType: formState.type,
         onConfirm: openEditForm,
@@ -116,7 +107,7 @@ export default function CommentCard({
       formDispatch({ commentId: comment.id, type: "open_reply" });
     }
 
-    if (formState.type !== null && shouldAskForConfirmation()) {
+    if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
         formType: formState.type,
         onConfirm: openReplyForm,
