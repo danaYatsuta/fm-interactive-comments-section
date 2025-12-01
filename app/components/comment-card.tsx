@@ -64,9 +64,10 @@ export default function CommentCard({
 
     if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
-        formType: formState.type,
+        dialogType:
+          formState.type === "edit" ? "discard_edit" : "discard_reply",
         onConfirm: closeForm,
-        type: "open_discard_confirmation",
+        type: "open",
       });
     } else {
       closeForm();
@@ -75,10 +76,11 @@ export default function CommentCard({
 
   function handleDeleteClick() {
     dialogDispatch({
+      dialogType: "delete_comment",
       onConfirm: () => {
         console.log(`Deleting comment with id ${comment.id}`);
       },
-      type: "open_comment_delete_confirmation",
+      type: "open",
     });
   }
 
@@ -93,9 +95,10 @@ export default function CommentCard({
 
     if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
-        formType: formState.type,
+        dialogType:
+          formState.type === "edit" ? "discard_edit" : "discard_reply",
         onConfirm: openEditForm,
-        type: "open_discard_confirmation",
+        type: "open",
       });
     } else {
       openEditForm();
@@ -109,9 +112,10 @@ export default function CommentCard({
 
     if (formState.type !== null && shouldAskForConfirmation) {
       dialogDispatch({
-        formType: formState.type,
+        dialogType:
+          formState.type === "edit" ? "discard_edit" : "discard_reply",
         onConfirm: openReplyForm,
-        type: "open_discard_confirmation",
+        type: "open",
       });
     } else {
       openReplyForm();
