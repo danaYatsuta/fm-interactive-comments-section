@@ -97,9 +97,7 @@ export default function AppCommentList({
     if (formState.type !== null && shouldAskForConfirmation()) {
       dialogDispatch({
         formType: formState.type,
-        onConfirm: () => {
-          openReplyForm();
-        },
+        onConfirm: openReplyForm,
         type: "open_discard_confirmation",
       });
     } else {
@@ -108,7 +106,19 @@ export default function AppCommentList({
   }
 
   function handleCommentCancelEditOrReplyClick() {
-    formDispatch({ type: "close" });
+    function closeForm() {
+      formDispatch({ type: "close" });
+    }
+
+    if (formState.type !== null && shouldAskForConfirmation()) {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: closeForm,
+        type: "open_discard_confirmation",
+      });
+    } else {
+      closeForm();
+    }
   }
 
   function handleFormTextAreaValueChange(
