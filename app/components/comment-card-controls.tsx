@@ -3,7 +3,7 @@ import iconDelete from "@/public/icons/icon-delete.svg";
 import iconEdit from "@/public/icons/icon-edit.svg";
 import iconReply from "@/public/icons/icon-reply.svg";
 
-export default function CommentControls({
+export default function CommentCardControls({
   canUserEdit,
   onDeleteClick,
   onEditClick,

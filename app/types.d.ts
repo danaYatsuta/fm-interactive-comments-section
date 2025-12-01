@@ -1,13 +1,13 @@
-export type CommentData =
-  | (CommentDataBase & { isReply: false })
-  | (CommentDataBase & {
+export type Comment =
+  | (CommentBase & { isReply: false })
+  | (CommentBase & {
       isReply: true;
       parentCommentId: number;
       replyingToId: number;
       replyingToUsername: string;
     });
 
-interface CommentDataBase {
+interface CommentBase {
   content: string;
   createdAt: string;
   id: number;

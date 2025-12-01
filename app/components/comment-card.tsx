@@ -1,22 +1,22 @@
 import Image from "next/image";
 import { useContext } from "react";
 
-import type { CommentData } from "@/app/types";
+import type { Comment } from "@/app/types";
 
 import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import ButtonFilled from "@/app/components/button-filled";
-import CommentControls from "@/app/components/comment-controls";
+import CommentCardControls from "@/app/components/comment-card-controls";
+import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
-import CommentVoteButtons from "@/app/components/comment-vote-buttons";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
 import { FormContext } from "@/app/lib/contexts/FormContext";
 
-export default function Comment({
-  commentData,
+export default function CommentCard({
+  comment,
 }: Readonly<{
-  commentData: CommentData;
+  comment: Comment;
 }>) {
   /* ------------------------------- Use Context ------------------------------ */
 
@@ -28,25 +28,25 @@ export default function Comment({
   // TODO this is a mock for checking whether comment belongs to current user
   // Replace with actual check when auth is implemented
 
-  const canUserEdit = commentData.username === "juliusomo";
+  const canUserEdit = comment.username === "juliusomo";
 
   const formattedScore =
-    commentData.score >= 1000
-      ? `${Math.round(commentData.score / 1000)}k`
-      : commentData.score.toString();
+    comment.score >= 1000
+      ? `${Math.round(comment.score / 1000)}k`
+      : comment.score.toString();
 
   const isEditFormOpen =
-    formState.type === "edit" && formState.commentId === commentData.id;
+    formState.type === "edit" && formState.commentId === comment.id;
 
   const isReplyFormOpen =
-    formState.type === "reply" && formState.commentId === commentData.id;
+    formState.type === "reply" && formState.commentId === comment.id;
 
   /* -------------------------------- Handlers -------------------------------- */
 
   function shouldAskForConfirmation(): boolean {
     switch (formState.type) {
       case "edit": {
-        return formState.textAreaValue !== commentData.content;
+        return formState.textAreaValue !== comment.content;
       }
       case null: {
         return false;
@@ -85,7 +85,7 @@ export default function Comment({
   function handleDeleteClick() {
     dialogDispatch({
       onConfirm: () => {
-        console.log(`Deleting comment with id ${commentData.id}`);
+        console.log(`Deleting comment with id ${comment.id}`);
       },
       type: "open_comment_delete_confirmation",
     });
@@ -94,8 +94,8 @@ export default function Comment({
   function handleEditClick() {
     function openEditForm() {
       formDispatch({
-        commentContent: commentData.content,
-        commentId: commentData.id,
+        commentContent: comment.content,
+        commentId: comment.id,
         type: "open_edit",
       });
     }
@@ -113,7 +113,7 @@ export default function Comment({
 
   function handleReplyClick() {
     function openReplyForm() {
-      formDispatch({ commentId: commentData.id, type: "open_reply" });
+      formDispatch({ commentId: comment.id, type: "open_reply" });
     }
 
     if (formState.type !== null && shouldAskForConfirmation()) {
@@ -138,23 +138,18 @@ export default function Comment({
 
       <BaseCard>
         <article
-          aria-labelledby={`comment-label-${commentData.id}`}
+          aria-labelledby={`comment-label-${comment.id}`}
           className="grid gap-4 md:gap-x-6"
-          id={`comment-${commentData.id}`}
+          id={`comment-${comment.id}`}
         >
-          <h2 className="sr-only" id={`comment-label-${commentData.id}`}>
-            Comment by {commentData.username} left{" "}
-            <TimeAgoWrapper date={commentData.createdAt} />
+          <h2 className="sr-only" id={`comment-label-${comment.id}`}>
+            Comment by {comment.username} left{" "}
+            <TimeAgoWrapper date={comment.createdAt} />
           </h2>
 
           <div className="xs:gap-4 col-span-2 flex items-center gap-2 text-nowrap md:col-span-1">
             <div className="relative size-8">
-              <Image
-                alt=""
-                fill={true}
-                sizes="2rem"
-                src={commentData.userAvatar}
-              />
+              <Image alt="" fill={true} sizes="2rem" src={comment.userAvatar} />
             </div>
 
             {/* aria-hidden="true" on p and TimeAgo because this text is repeated in h2 above */}
@@ -163,7 +158,7 @@ export default function Comment({
               aria-hidden="true"
               className="text-grey-800 flex items-center gap-2 font-medium"
             >
-              <span className="max-w-28 truncate">{commentData.username}</span>
+              <span className="max-w-28 truncate">{comment.username}</span>
               {canUserEdit && (
                 <span className="xs:text-sm flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-xs text-white">
                   you
@@ -171,7 +166,7 @@ export default function Comment({
               )}
             </p>
 
-            <TimeAgoWrapper date={commentData.createdAt} />
+            <TimeAgoWrapper date={comment.createdAt} />
           </div>
 
           {isEditFormOpen ? (
@@ -198,20 +193,20 @@ export default function Comment({
           ) : (
             <>
               <p className="col-span-2">
-                {commentData.isReply && (
+                {comment.isReply && (
                   <a
                     aria-label="Jump to parent comment"
                     className="rounded-sm font-medium text-purple-600 hover:underline"
-                    href={`#comment-${commentData.replyingToId}`}
+                    href={`#comment-${comment.replyingToId}`}
                   >
-                    @{commentData.replyingToUsername}
+                    @{comment.replyingToUsername}
                   </a>
                 )}{" "}
-                {commentData.content}
+                {comment.content}
               </p>
 
               <div className="self-center justify-self-end md:col-start-3 md:row-start-1">
-                <CommentControls
+                <CommentCardControls
                   canUserEdit={canUserEdit}
                   onDeleteClick={handleDeleteClick}
                   onEditClick={handleEditClick}
@@ -222,7 +217,7 @@ export default function Comment({
           )}
 
           <div className="col-start-1 row-start-3 md:row-span-2 md:row-start-1">
-            <CommentVoteButtons score={formattedScore} />
+            <CommentCardVoteButtons score={formattedScore} />
           </div>
         </article>
       </BaseCard>

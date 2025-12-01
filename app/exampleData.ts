@@ -1,8 +1,8 @@
-import { CommentData } from "@/app/types";
+import { Comment } from "@/app/types";
 
 const exampleData: {
-  comments: CommentData[];
-  currentUser: Pick<CommentData, "userAvatar" | "username">;
+  comments: Comment[];
+  currentUser: Pick<Comment, "userAvatar" | "username">;
 } = {
   comments: [
     {

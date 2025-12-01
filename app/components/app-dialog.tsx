@@ -5,7 +5,7 @@ import ButtonFilled from "@/app/components/button-filled";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
 import { tw } from "@/app/lib/utils";
 
-export default function BaseDialog() {
+export default function AppDialog() {
   /* ------------------------------- Use Context ------------------------------ */
 
   const [dialogState, dialogDispatch] = useContext(DialogContext);

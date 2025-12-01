@@ -1,42 +1,42 @@
-import Comment from "@/app/components/comment";
-import { CommentData } from "@/app/types";
+import CommentCard from "@/app/components/comment-card";
+import { Comment } from "@/app/types";
 
 export default function AppCommentList({
-  commentsData,
+  comments,
 }: Readonly<{
-  commentsData: CommentData[];
+  comments: Comment[];
 }>) {
   /* --------------------------------- Markup --------------------------------- */
 
-  const topLevelCommentsData = commentsData.filter(
+  const topLevelComments = comments.filter(
     (commentData) => !commentData.isReply,
   );
 
-  const comments = topLevelCommentsData.map((topLevelCommentData) => {
-    const repliesData = commentsData.filter(
+  const commentCards = topLevelComments.map((topLevelComment) => {
+    const replies = comments.filter(
       (commentData) =>
         commentData.isReply &&
-        commentData.parentCommentId === topLevelCommentData.id,
+        commentData.parentCommentId === topLevelComment.id,
     );
 
-    const replies = repliesData.map((replyData) => {
+    const replyCards = replies.map((reply) => {
       return (
-        <li key={replyData.id}>
-          <Comment commentData={replyData} />
+        <li key={reply.id}>
+          <CommentCard comment={reply} />
         </li>
       );
     });
 
     return (
-      <li key={topLevelCommentData.id}>
-        <Comment commentData={topLevelCommentData} />
+      <li key={topLevelComment.id}>
+        <CommentCard comment={topLevelComment} />
 
-        {replies.length !== 0 && (
+        {replyCards.length !== 0 && (
           <ul
             aria-label="Replies"
             className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"
           >
-            {replies}
+            {replyCards}
           </ul>
         )}
       </li>
@@ -46,7 +46,7 @@ export default function AppCommentList({
   return (
     <>
       <ul aria-label="Comments" className="flex flex-col gap-4 md:gap-5">
-        {comments}
+        {commentCards}
       </ul>
     </>
   );

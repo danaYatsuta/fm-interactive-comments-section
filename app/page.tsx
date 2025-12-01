@@ -3,7 +3,7 @@
 import { useReducer } from "react";
 
 import AppCommentList from "@/app/components/app-comment-list";
-import BaseDialog from "@/app/components/base-dialog";
+import AppDialog from "@/app/components/app-dialog";
 import CommentForm from "@/app/components/comment-form";
 import exampleData from "@/app/exampleData";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
@@ -14,7 +14,7 @@ import formReducer from "@/app/lib/reducers/formReducer";
 export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
-  const commentsData = exampleData.comments;
+  const comments = exampleData.comments;
 
   // Info about open edit or reply form; only one edit or reply form can be shown at once
   const [formState, formDispatch] = useReducer(formReducer, {
@@ -41,10 +41,10 @@ export default function App() {
 
       <DialogContext value={[dialogState, dialogDispatch]}>
         <FormContext value={[formState, formDispatch]}>
-          <AppCommentList commentsData={commentsData} />
+          <AppCommentList comments={comments} />
         </FormContext>
 
-        <BaseDialog />
+        <AppDialog />
       </DialogContext>
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />

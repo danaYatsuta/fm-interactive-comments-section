@@ -1,7 +1,7 @@
 import IconMinus from "@/app/components/icon-minus";
 import IconPlus from "@/app/components/icon-plus";
 
-export default function CommentVoteButtons({
+export default function CommentCardVoteButtons({
   score,
 }: Readonly<{ score: string }>) {
   return (
