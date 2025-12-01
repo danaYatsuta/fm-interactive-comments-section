@@ -17,6 +17,7 @@ export default function Comment({
   onCancelEditOrReplyClick,
   onDeleteClick,
   onEditClick,
+  onFormTextAreaValueChange,
   onReplyClick,
 }: Readonly<{
   commentData: CommentData;
@@ -24,6 +25,7 @@ export default function Comment({
   onCancelEditOrReplyClick: () => void;
   onDeleteClick: () => void;
   onEditClick: () => void;
+  onFormTextAreaValueChange: React.ChangeEventHandler;
   onReplyClick: () => void;
 }>) {
   /* ------------------------------ Derived State ----------------------------- */
@@ -96,8 +98,9 @@ export default function Comment({
             <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
               <div className="col-span-2">
                 <BaseTextArea
-                  defaultValue={commentData.content}
+                  onChange={onFormTextAreaValueChange}
                   placeholder="Edit the comment..."
+                  value={formState.textAreaValue}
                 />
               </div>
 
@@ -147,8 +150,10 @@ export default function Comment({
         <CommentForm
           buttonText="Reply"
           onCancelClick={onCancelEditOrReplyClick}
+          onTextAreaChange={onFormTextAreaValueChange}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
+          textAreaValue={formState.textAreaValue}
         />
       )}
     </div>

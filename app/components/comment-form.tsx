@@ -8,13 +8,17 @@ import commentsData from "@/app/exampleData";
 export default function CommentForm({
   buttonText,
   onCancelClick,
+  onTextAreaChange,
   showCancelButton = false,
   textAreaPlaceholder,
+  textAreaValue,
 }: Readonly<{
   buttonText: string;
   onCancelClick?: () => void;
+  onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   showCancelButton?: boolean;
   textAreaPlaceholder?: string;
+  textAreaValue?: string;
 }>) {
   /* --------------------------------- Markup --------------------------------- */
 
@@ -22,7 +26,11 @@ export default function CommentForm({
     <BaseCard>
       <form className="grid gap-4 md:flex">
         <div className="col-span-2 grow">
-          <BaseTextArea placeholder={textAreaPlaceholder} />
+          <BaseTextArea
+            onChange={onTextAreaChange}
+            placeholder={textAreaPlaceholder}
+            value={textAreaValue}
+          />
         </div>
 
         <div className="relative size-8 self-center md:-order-1 md:size-10 md:self-start">

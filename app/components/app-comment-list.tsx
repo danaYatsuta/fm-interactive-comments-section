@@ -90,6 +90,15 @@ export default function AppCommentList({
     });
   }
 
+  function handleFormTextAreaValueChange(
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) {
+    formDispatch({
+      textAreaValue: e.target.value,
+      type: "change_text_area_value",
+    });
+  }
+
   function handleDialogCancelClick() {
     dialogDispatch({ type: "close" });
   }
@@ -121,6 +130,7 @@ export default function AppCommentList({
             onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
             onDeleteClick={() => handleCommentDeleteClick(replyData.id)}
             onEditClick={() => handleCommentEditClick(replyData.id)}
+            onFormTextAreaValueChange={handleFormTextAreaValueChange}
             onReplyClick={() => handleCommentReplyClick(replyData.id)}
           />
         </li>
@@ -135,6 +145,7 @@ export default function AppCommentList({
           onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
           onDeleteClick={() => handleCommentDeleteClick(topLevelCommentData.id)}
           onEditClick={() => handleCommentEditClick(topLevelCommentData.id)}
+          onFormTextAreaValueChange={handleFormTextAreaValueChange}
           onReplyClick={() => handleCommentReplyClick(topLevelCommentData.id)}
         />
 
