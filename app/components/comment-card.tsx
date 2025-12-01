@@ -46,7 +46,7 @@ export default function CommentCard({
   function executeWithConfirmation(action: () => void) {
     const shouldAskForConfirmation =
       (formState.type === "edit" &&
-        formState.textAreaValue !== comment.content) ||
+        formState.textAreaValue !== formState.commentContent) ||
       (formState.type === "reply" && formState.textAreaValue !== "");
 
     if (shouldAskForConfirmation) {
