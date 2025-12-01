@@ -6,6 +6,8 @@ import AppCommentList from "@/app/components/app-comment-list";
 import BaseDialog from "@/app/components/base-dialog";
 import CommentForm from "@/app/components/comment-form";
 import exampleData from "@/app/exampleData";
+import { DialogContext } from "@/app/lib/contexts/DialogContext";
+import { FormContext } from "@/app/lib/contexts/FormContext";
 import dialogReducer from "@/app/lib/reducers/dialogReducer";
 import formReducer from "@/app/lib/reducers/formReducer";
 
@@ -147,21 +149,27 @@ export default function App() {
         Frontend Mentor | Interactive comments section
       </h1>
 
-      <AppCommentList
-        commentsData={exampleData.comments}
-        formState={formState}
-        onCommentCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
-        onCommentDeleteClick={handleCommentDeleteClick}
-        onCommentEditClick={handleCommentEditClick}
-        onCommentReplyClick={handleCommentReplyClick}
-        onFormTextAreaValueChange={handleFormTextAreaValueChange}
-      />
+      <DialogContext value={[dialogState, dialogDispatch]}>
+        <FormContext value={[formState, formDispatch]}>
+          <AppCommentList
+            commentsData={exampleData.comments}
+            formState={formState}
+            onCommentCancelEditOrReplyClick={
+              handleCommentCancelEditOrReplyClick
+            }
+            onCommentDeleteClick={handleCommentDeleteClick}
+            onCommentEditClick={handleCommentEditClick}
+            onCommentReplyClick={handleCommentReplyClick}
+            onFormTextAreaValueChange={handleFormTextAreaValueChange}
+          />
+        </FormContext>
 
-      <BaseDialog
-        dialogState={dialogState}
-        onCancelClick={handleDialogCancelClick}
-        onConfirmClick={handleDialogConfirmClick}
-      />
+        <BaseDialog
+          dialogState={dialogState}
+          onCancelClick={handleDialogCancelClick}
+          onConfirmClick={handleDialogConfirmClick}
+        />
+      </DialogContext>
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
     </main>

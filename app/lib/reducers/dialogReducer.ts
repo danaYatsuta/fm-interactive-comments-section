@@ -1,12 +1,4 @@
-export interface DialogState {
-  confirmButtonText: string;
-  heading: string;
-  isOpen: boolean;
-  message: string;
-  onConfirm: () => void;
-}
-
-type DialogAction =
+export type DialogAction =
   | {
       formType: "edit" | "reply";
       onConfirm: () => void;
@@ -19,6 +11,14 @@ type DialogAction =
   | {
       type: "close";
     };
+
+export interface DialogState {
+  confirmButtonText: string;
+  heading: string;
+  isOpen: boolean;
+  message: string;
+  onConfirm: () => void;
+}
 
 export default function dialogReducer(
   state: DialogState,
