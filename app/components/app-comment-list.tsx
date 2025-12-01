@@ -1,144 +1,24 @@
-"use client";
-
-import { useReducer } from "react";
-
-import BaseDialog from "@/app/components/base-dialog";
 import Comment from "@/app/components/comment";
-import dialogReducer from "@/app/lib/reducers/dialogReducer";
-import formReducer from "@/app/lib/reducers/formReducer";
+import { FormState } from "@/app/lib/reducers/formReducer";
 import { CommentData } from "@/app/types";
 
 export default function AppCommentList({
   commentsData,
+  formState,
+  onCommentCancelEditOrReplyClick,
+  onCommentDeleteClick,
+  onCommentEditClick,
+  onCommentReplyClick,
+  onFormTextAreaValueChange,
 }: Readonly<{
   commentsData: CommentData[];
+  formState: FormState;
+  onCommentCancelEditOrReplyClick: () => void;
+  onCommentDeleteClick: (commentId: number) => void;
+  onCommentEditClick: (commentId: number) => void;
+  onCommentReplyClick: (commentId: number) => void;
+  onFormTextAreaValueChange: React.ChangeEventHandler<HTMLTextAreaElement>;
 }>) {
-  /* ---------------------------------- State --------------------------------- */
-
-  // Info about open edit or reply form; only one edit or reply form can be shown at once
-  const [formState, formDispatch] = useReducer(formReducer, {
-    commentId: null,
-    textAreaValue: "",
-    type: null,
-  });
-
-  const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
-    confirmButtonText: "",
-    heading: "",
-    isOpen: false,
-    message: "",
-    onConfirm: () => {},
-  });
-
-  /* -------------------------------- Handlers -------------------------------- */
-
-  // Don't ask for cancel confirmation if edit is the same as original comment or if reply is empty
-  function shouldAskForConfirmation(): boolean {
-    switch (formState.type) {
-      case "edit": {
-        const editedCommentData = commentsData.find(
-          (commentData) => commentData.id === formState.commentId,
-        );
-
-        return (
-          editedCommentData !== undefined &&
-          formState.textAreaValue !== editedCommentData.content
-        );
-      }
-      case null: {
-        return false;
-      }
-      case "reply": {
-        return formState.textAreaValue !== "";
-      }
-    }
-  }
-
-  function handleCommentDeleteClick(commentId: number) {
-    dialogDispatch({
-      onConfirm: () => {
-        console.log(`Deleting comment with id ${commentId}`);
-      },
-      type: "open_comment_delete_confirmation",
-    });
-  }
-
-  function handleCommentEditClick(commentId: number) {
-    function openEditForm() {
-      const editedCommentData = commentsData.find(
-        (commentData) => commentData.id === commentId,
-      );
-
-      if (editedCommentData === undefined) return;
-
-      formDispatch({
-        commentContent: editedCommentData.content,
-        commentId,
-        type: "open_edit",
-      });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: openEditForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      openEditForm();
-    }
-  }
-
-  function handleCommentReplyClick(commentId: number) {
-    function openReplyForm() {
-      formDispatch({ commentId, type: "open_reply" });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: openReplyForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      openReplyForm();
-    }
-  }
-
-  function handleCommentCancelEditOrReplyClick() {
-    function closeForm() {
-      formDispatch({ type: "close" });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: closeForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      closeForm();
-    }
-  }
-
-  function handleFormTextAreaValueChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) {
-    formDispatch({
-      textAreaValue: e.target.value.trim(),
-      type: "change_text_area_value",
-    });
-  }
-
-  function handleDialogCancelClick() {
-    dialogDispatch({ type: "close" });
-  }
-
-  function handleDialogConfirmClick() {
-    dialogState.onConfirm();
-    dialogDispatch({ type: "close" });
-  }
-
   /* --------------------------------- Markup --------------------------------- */
 
   const topLevelCommentsData = commentsData.filter(
@@ -158,11 +38,11 @@ export default function AppCommentList({
           <Comment
             commentData={replyData}
             formState={formState}
-            onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
-            onDeleteClick={() => handleCommentDeleteClick(replyData.id)}
-            onEditClick={() => handleCommentEditClick(replyData.id)}
-            onFormTextAreaValueChange={handleFormTextAreaValueChange}
-            onReplyClick={() => handleCommentReplyClick(replyData.id)}
+            onCancelEditOrReplyClick={onCommentCancelEditOrReplyClick}
+            onDeleteClick={() => onCommentDeleteClick(replyData.id)}
+            onEditClick={() => onCommentEditClick(replyData.id)}
+            onFormTextAreaValueChange={onFormTextAreaValueChange}
+            onReplyClick={() => onCommentReplyClick(replyData.id)}
           />
         </li>
       );
@@ -173,11 +53,11 @@ export default function AppCommentList({
         <Comment
           commentData={topLevelCommentData}
           formState={formState}
-          onCancelEditOrReplyClick={handleCommentCancelEditOrReplyClick}
-          onDeleteClick={() => handleCommentDeleteClick(topLevelCommentData.id)}
-          onEditClick={() => handleCommentEditClick(topLevelCommentData.id)}
-          onFormTextAreaValueChange={handleFormTextAreaValueChange}
-          onReplyClick={() => handleCommentReplyClick(topLevelCommentData.id)}
+          onCancelEditOrReplyClick={onCommentCancelEditOrReplyClick}
+          onDeleteClick={() => onCommentDeleteClick(topLevelCommentData.id)}
+          onEditClick={() => onCommentEditClick(topLevelCommentData.id)}
+          onFormTextAreaValueChange={onFormTextAreaValueChange}
+          onReplyClick={() => onCommentReplyClick(topLevelCommentData.id)}
         />
 
         {replies.length !== 0 && (
@@ -197,12 +77,6 @@ export default function AppCommentList({
       <ul aria-label="Comments" className="flex flex-col gap-4 md:gap-5">
         {comments}
       </ul>
-
-      <BaseDialog
-        dialogState={dialogState}
-        onCancelClick={handleDialogCancelClick}
-        onConfirmClick={handleDialogConfirmClick}
-      />
     </>
   );
 }
