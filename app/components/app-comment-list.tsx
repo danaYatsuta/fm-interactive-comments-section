@@ -32,8 +32,26 @@ export default function AppCommentList({
 
   /* -------------------------------- Handlers -------------------------------- */
 
-  function handleCommentCancelEditOrReplyClick() {
-    formDispatch({ type: "close" });
+  // Don't ask for cancel confirmation if edit is the same as original comment or if reply is empty
+  function shouldAskForConfirmation(): boolean {
+    switch (formState.type) {
+      case "edit": {
+        const editedCommentData = commentsData.find(
+          (commentData) => commentData.id === formState.commentId,
+        );
+
+        return (
+          editedCommentData !== undefined &&
+          formState.textAreaValue !== editedCommentData.content
+        );
+      }
+      case null: {
+        return false;
+      }
+      case "reply": {
+        return formState.textAreaValue !== "";
+      }
+    }
   }
 
   function handleCommentDeleteClick(commentId: number) {
@@ -47,27 +65,27 @@ export default function AppCommentList({
 
   function handleCommentEditClick(commentId: number) {
     function openEditForm() {
-      const comment = commentsData.find(
+      const editedCommentData = commentsData.find(
         (commentData) => commentData.id === commentId,
       );
 
-      if (comment === undefined) return;
+      if (editedCommentData === undefined) return;
 
       formDispatch({
-        commentContent: comment.content,
+        commentContent: editedCommentData.content,
         commentId,
         type: "open_edit",
       });
     }
 
-    if (formState.type === null) {
-      openEditForm();
-    } else {
+    if (formState.type !== null && shouldAskForConfirmation()) {
       dialogDispatch({
         formType: formState.type,
         onConfirm: openEditForm,
         type: "open_discard_confirmation",
       });
+    } else {
+      openEditForm();
     }
   }
 
@@ -76,25 +94,28 @@ export default function AppCommentList({
       formDispatch({ commentId, type: "open_reply" });
     }
 
-    if (formState.type === null) {
+    if (formState.type !== null && shouldAskForConfirmation()) {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: () => {
+          openReplyForm();
+        },
+        type: "open_discard_confirmation",
+      });
+    } else {
       openReplyForm();
-      return;
     }
+  }
 
-    dialogDispatch({
-      formType: formState.type,
-      onConfirm: () => {
-        openReplyForm();
-      },
-      type: "open_discard_confirmation",
-    });
+  function handleCommentCancelEditOrReplyClick() {
+    formDispatch({ type: "close" });
   }
 
   function handleFormTextAreaValueChange(
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) {
     formDispatch({
-      textAreaValue: e.target.value,
+      textAreaValue: e.target.value.trim(),
       type: "change_text_area_value",
     });
   }
