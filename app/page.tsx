@@ -14,7 +14,6 @@ import formReducer from "@/app/lib/reducers/formReducer";
 export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
-  // Mock data; will be fetched from server later
   const commentsData = exampleData.comments;
 
   // Info about open edit or reply form; only one edit or reply form can be shown at once
@@ -33,104 +32,6 @@ export default function App() {
   });
 
   /* -------------------------------- Handlers -------------------------------- */
-
-  // Don't ask for cancel confirmation if edit is the same as original comment or if reply is empty
-  function shouldAskForConfirmation(): boolean {
-    switch (formState.type) {
-      case "edit": {
-        const editedCommentData = commentsData.find(
-          (commentData) => commentData.id === formState.commentId,
-        );
-
-        return (
-          editedCommentData !== undefined &&
-          formState.textAreaValue !== editedCommentData.content
-        );
-      }
-      case null: {
-        return false;
-      }
-      case "reply": {
-        return formState.textAreaValue !== "";
-      }
-    }
-  }
-
-  function handleCommentDeleteClick(commentId: number) {
-    dialogDispatch({
-      onConfirm: () => {
-        console.log(`Deleting comment with id ${commentId}`);
-      },
-      type: "open_comment_delete_confirmation",
-    });
-  }
-
-  function handleCommentEditClick(commentId: number) {
-    function openEditForm() {
-      const editedCommentData = commentsData.find(
-        (commentData) => commentData.id === commentId,
-      );
-
-      if (editedCommentData === undefined) return;
-
-      formDispatch({
-        commentContent: editedCommentData.content,
-        commentId,
-        type: "open_edit",
-      });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: openEditForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      openEditForm();
-    }
-  }
-
-  function handleCommentReplyClick(commentId: number) {
-    function openReplyForm() {
-      formDispatch({ commentId, type: "open_reply" });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: openReplyForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      openReplyForm();
-    }
-  }
-
-  function handleCommentCancelEditOrReplyClick() {
-    function closeForm() {
-      formDispatch({ type: "close" });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation()) {
-      dialogDispatch({
-        formType: formState.type,
-        onConfirm: closeForm,
-        type: "open_discard_confirmation",
-      });
-    } else {
-      closeForm();
-    }
-  }
-
-  function handleFormTextAreaValueChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) {
-    formDispatch({
-      textAreaValue: e.target.value.trim(),
-      type: "change_text_area_value",
-    });
-  }
 
   function handleDialogCancelClick() {
     dialogDispatch({ type: "close" });
@@ -151,17 +52,7 @@ export default function App() {
 
       <DialogContext value={[dialogState, dialogDispatch]}>
         <FormContext value={[formState, formDispatch]}>
-          <AppCommentList
-            commentsData={exampleData.comments}
-            formState={formState}
-            onCommentCancelEditOrReplyClick={
-              handleCommentCancelEditOrReplyClick
-            }
-            onCommentDeleteClick={handleCommentDeleteClick}
-            onCommentEditClick={handleCommentEditClick}
-            onCommentReplyClick={handleCommentReplyClick}
-            onFormTextAreaValueChange={handleFormTextAreaValueChange}
-          />
+          <AppCommentList commentsData={commentsData} />
         </FormContext>
 
         <BaseDialog

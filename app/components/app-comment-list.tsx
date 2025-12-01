@@ -1,23 +1,10 @@
 import Comment from "@/app/components/comment";
-import { FormState } from "@/app/lib/reducers/formReducer";
 import { CommentData } from "@/app/types";
 
 export default function AppCommentList({
   commentsData,
-  formState,
-  onCommentCancelEditOrReplyClick,
-  onCommentDeleteClick,
-  onCommentEditClick,
-  onCommentReplyClick,
-  onFormTextAreaValueChange,
 }: Readonly<{
   commentsData: CommentData[];
-  formState: FormState;
-  onCommentCancelEditOrReplyClick: () => void;
-  onCommentDeleteClick: (commentId: number) => void;
-  onCommentEditClick: (commentId: number) => void;
-  onCommentReplyClick: (commentId: number) => void;
-  onFormTextAreaValueChange: React.ChangeEventHandler<HTMLTextAreaElement>;
 }>) {
   /* --------------------------------- Markup --------------------------------- */
 
@@ -35,30 +22,14 @@ export default function AppCommentList({
     const replies = repliesData.map((replyData) => {
       return (
         <li key={replyData.id}>
-          <Comment
-            commentData={replyData}
-            formState={formState}
-            onCancelEditOrReplyClick={onCommentCancelEditOrReplyClick}
-            onDeleteClick={() => onCommentDeleteClick(replyData.id)}
-            onEditClick={() => onCommentEditClick(replyData.id)}
-            onFormTextAreaValueChange={onFormTextAreaValueChange}
-            onReplyClick={() => onCommentReplyClick(replyData.id)}
-          />
+          <Comment commentData={replyData} />
         </li>
       );
     });
 
     return (
       <li key={topLevelCommentData.id}>
-        <Comment
-          commentData={topLevelCommentData}
-          formState={formState}
-          onCancelEditOrReplyClick={onCommentCancelEditOrReplyClick}
-          onDeleteClick={() => onCommentDeleteClick(topLevelCommentData.id)}
-          onEditClick={() => onCommentEditClick(topLevelCommentData.id)}
-          onFormTextAreaValueChange={onFormTextAreaValueChange}
-          onReplyClick={() => onCommentReplyClick(topLevelCommentData.id)}
-        />
+        <Comment commentData={topLevelCommentData} />
 
         {replies.length !== 0 && (
           <ul

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useContext } from "react";
 
 import type { CommentData } from "@/app/types";
 
@@ -9,25 +10,19 @@ import CommentControls from "@/app/components/comment-controls";
 import CommentForm from "@/app/components/comment-form";
 import CommentVoteButtons from "@/app/components/comment-vote-buttons";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
-import { FormState } from "@/app/lib/reducers/formReducer";
+import { DialogContext } from "@/app/lib/contexts/DialogContext";
+import { FormContext } from "@/app/lib/contexts/FormContext";
 
 export default function Comment({
   commentData,
-  formState,
-  onCancelEditOrReplyClick,
-  onDeleteClick,
-  onEditClick,
-  onFormTextAreaValueChange,
-  onReplyClick,
 }: Readonly<{
   commentData: CommentData;
-  formState: FormState;
-  onCancelEditOrReplyClick: () => void;
-  onDeleteClick: () => void;
-  onEditClick: () => void;
-  onFormTextAreaValueChange: React.ChangeEventHandler;
-  onReplyClick: () => void;
 }>) {
+  /* ------------------------------- Use Context ------------------------------ */
+
+  const [formState, formDispatch] = useContext(FormContext);
+  const [, dialogDispatch] = useContext(DialogContext);
+
   /* ------------------------------ Derived State ----------------------------- */
 
   // TODO this is a mock for checking whether comment belongs to current user
@@ -45,6 +40,92 @@ export default function Comment({
 
   const isReplyFormOpen =
     formState.type === "reply" && formState.commentId === commentData.id;
+
+  /* -------------------------------- Handlers -------------------------------- */
+
+  function shouldAskForConfirmation(): boolean {
+    switch (formState.type) {
+      case "edit": {
+        return formState.textAreaValue !== commentData.content;
+      }
+      case null: {
+        return false;
+      }
+      case "reply": {
+        return formState.textAreaValue !== "";
+      }
+    }
+  }
+
+  function handleFormTextAreaValueChange(
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) {
+    formDispatch({
+      textAreaValue: e.target.value.trim(),
+      type: "change_text_area_value",
+    });
+  }
+
+  function handleCancelEditOrReplyClick() {
+    function closeForm() {
+      formDispatch({ type: "close" });
+    }
+
+    if (formState.type !== null && shouldAskForConfirmation()) {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: closeForm,
+        type: "open_discard_confirmation",
+      });
+    } else {
+      closeForm();
+    }
+  }
+
+  function handleDeleteClick() {
+    dialogDispatch({
+      onConfirm: () => {
+        console.log(`Deleting comment with id ${commentData.id}`);
+      },
+      type: "open_comment_delete_confirmation",
+    });
+  }
+
+  function handleEditClick() {
+    function openEditForm() {
+      formDispatch({
+        commentContent: commentData.content,
+        commentId: commentData.id,
+        type: "open_edit",
+      });
+    }
+
+    if (formState.type !== null && shouldAskForConfirmation()) {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: openEditForm,
+        type: "open_discard_confirmation",
+      });
+    } else {
+      openEditForm();
+    }
+  }
+
+  function handleReplyClick() {
+    function openReplyForm() {
+      formDispatch({ commentId: commentData.id, type: "open_reply" });
+    }
+
+    if (formState.type !== null && shouldAskForConfirmation()) {
+      dialogDispatch({
+        formType: formState.type,
+        onConfirm: openReplyForm,
+        type: "open_discard_confirmation",
+      });
+    } else {
+      openReplyForm();
+    }
+  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -98,7 +179,7 @@ export default function Comment({
             <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
               <div className="col-span-2">
                 <BaseTextArea
-                  onChange={onFormTextAreaValueChange}
+                  onChange={handleFormTextAreaValueChange}
                   placeholder="Edit the comment..."
                   value={formState.textAreaValue}
                 />
@@ -107,7 +188,7 @@ export default function Comment({
               <div className="col-start-2 flex justify-end gap-2">
                 <ButtonFilled
                   color="pink"
-                  onClick={onCancelEditOrReplyClick}
+                  onClick={handleCancelEditOrReplyClick}
                   text="Cancel"
                 />
 
@@ -132,9 +213,9 @@ export default function Comment({
               <div className="self-center justify-self-end md:col-start-3 md:row-start-1">
                 <CommentControls
                   canUserEdit={canUserEdit}
-                  onDeleteClick={onDeleteClick}
-                  onEditClick={onEditClick}
-                  onReplyClick={onReplyClick}
+                  onDeleteClick={handleDeleteClick}
+                  onEditClick={handleEditClick}
+                  onReplyClick={handleReplyClick}
                 />
               </div>
             </>
@@ -149,8 +230,8 @@ export default function Comment({
       {isReplyFormOpen && (
         <CommentForm
           buttonText="Reply"
-          onCancelClick={onCancelEditOrReplyClick}
-          onTextAreaChange={onFormTextAreaValueChange}
+          onCancelClick={handleCancelEditOrReplyClick}
+          onTextAreaChange={handleFormTextAreaValueChange}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
           textAreaValue={formState.textAreaValue}
