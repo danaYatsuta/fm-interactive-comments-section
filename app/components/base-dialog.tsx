@@ -1,19 +1,15 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 
 import ButtonFilled from "@/app/components/button-filled";
-import { DialogState } from "@/app/lib/reducers/dialogReducer";
+import { DialogContext } from "@/app/lib/contexts/DialogContext";
 import { tw } from "@/app/lib/utils";
 
-export default function BaseDialog({
-  dialogState,
-  onCancelClick,
-  onConfirmClick,
-}: Readonly<{
-  dialogState: DialogState;
-  onCancelClick: () => void;
-  onConfirmClick: () => void;
-}>) {
+export default function BaseDialog() {
+  /* ------------------------------- Use Context ------------------------------ */
+
+  const [dialogState, dialogDispatch] = useContext(DialogContext);
+
   /* ---------------------------------- Hooks --------------------------------- */
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -29,6 +25,17 @@ export default function BaseDialog({
       enableBodyScroll(dialogRef.current);
     }
   }, [dialogState.isOpen]);
+
+  /* -------------------------------- Handlers -------------------------------- */
+
+  function handleCancelClick() {
+    dialogDispatch({ type: "close" });
+  }
+
+  function handleConfirmClick() {
+    dialogState.onConfirm();
+    dialogDispatch({ type: "close" });
+  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -53,14 +60,14 @@ export default function BaseDialog({
           <ButtonFilled
             color="grey"
             grow
-            onClick={onCancelClick}
+            onClick={handleCancelClick}
             text="No, cancel"
           />
 
           <ButtonFilled
             color="pink"
             grow
-            onClick={onConfirmClick}
+            onClick={handleConfirmClick}
             text={dialogState.confirmButtonText}
           />
         </div>

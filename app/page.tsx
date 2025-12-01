@@ -31,17 +31,6 @@ export default function App() {
     onConfirm: () => {},
   });
 
-  /* -------------------------------- Handlers -------------------------------- */
-
-  function handleDialogCancelClick() {
-    dialogDispatch({ type: "close" });
-  }
-
-  function handleDialogConfirmClick() {
-    dialogState.onConfirm();
-    dialogDispatch({ type: "close" });
-  }
-
   /* --------------------------------- Markup --------------------------------- */
 
   return (
@@ -55,11 +44,7 @@ export default function App() {
           <AppCommentList commentsData={commentsData} />
         </FormContext>
 
-        <BaseDialog
-          dialogState={dialogState}
-          onCancelClick={handleDialogCancelClick}
-          onConfirmClick={handleDialogConfirmClick}
-        />
+        <BaseDialog />
       </DialogContext>
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
