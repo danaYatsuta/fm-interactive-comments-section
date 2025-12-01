@@ -13,10 +13,12 @@ export type FormAction =
       type: "close";
     };
 
-export interface FormState {
+export type FormState = FormStateBase &
+  ({ commentContent: string; type: "edit" } | { type: "reply" | null });
+
+interface FormStateBase {
   commentId: null | number;
   textAreaValue: string;
-  type: "edit" | "reply" | null;
 }
 
 export default function formReducer(
@@ -37,6 +39,7 @@ export default function formReducer(
 
     case "open_edit": {
       return {
+        commentContent: action.commentContent,
         commentId: action.commentId,
         textAreaValue: action.commentContent,
         type: "edit",
