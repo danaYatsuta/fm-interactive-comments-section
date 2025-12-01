@@ -16,7 +16,7 @@ export interface DialogState {
   onConfirm: () => void;
 }
 
-type DialogType = "delete_comment" | "discard_edit" | "discard_reply";
+export type DialogType = "delete_comment" | "discard_edit" | "discard_reply";
 
 const confirmButtonTexts: Record<DialogType, string> = {
   delete_comment: "Yes, delete",

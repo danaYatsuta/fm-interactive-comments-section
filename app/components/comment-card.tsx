@@ -41,12 +41,27 @@ export default function CommentCard({
   const isReplyFormOpen =
     formState.type === "reply" && formState.commentId === comment.id;
 
-  /* -------------------------------- Handlers -------------------------------- */
+  /* ---------------------------- Helper Functions ---------------------------- */
 
-  const shouldAskForConfirmation =
-    (formState.type === "edit" &&
-      formState.textAreaValue !== comment.content) ||
-    (formState.type === "reply" && formState.textAreaValue !== "");
+  function executeWithConfirmation(action: () => void) {
+    const shouldAskForConfirmation =
+      (formState.type === "edit" &&
+        formState.textAreaValue !== comment.content) ||
+      (formState.type === "reply" && formState.textAreaValue !== "");
+
+    if (shouldAskForConfirmation) {
+      dialogDispatch({
+        dialogType:
+          formState.type === "edit" ? "discard_edit" : "discard_reply",
+        onConfirm: action,
+        type: "open",
+      });
+    } else {
+      action();
+    }
+  }
+
+  /* -------------------------------- Handlers -------------------------------- */
 
   function handleFormTextAreaValueChange(
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -55,23 +70,6 @@ export default function CommentCard({
       textAreaValue: e.target.value.trim(),
       type: "change_text_area_value",
     });
-  }
-
-  function handleCancelEditOrReplyClick() {
-    function closeForm() {
-      formDispatch({ type: "close" });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation) {
-      dialogDispatch({
-        dialogType:
-          formState.type === "edit" ? "discard_edit" : "discard_reply",
-        onConfirm: closeForm,
-        type: "open",
-      });
-    } else {
-      closeForm();
-    }
   }
 
   function handleDeleteClick() {
@@ -85,41 +83,25 @@ export default function CommentCard({
   }
 
   function handleEditClick() {
-    function openEditForm() {
+    executeWithConfirmation(() => {
       formDispatch({
         commentContent: comment.content,
         commentId: comment.id,
         type: "open_edit",
       });
-    }
-
-    if (formState.type !== null && shouldAskForConfirmation) {
-      dialogDispatch({
-        dialogType:
-          formState.type === "edit" ? "discard_edit" : "discard_reply",
-        onConfirm: openEditForm,
-        type: "open",
-      });
-    } else {
-      openEditForm();
-    }
+    });
   }
 
   function handleReplyClick() {
-    function openReplyForm() {
+    executeWithConfirmation(() => {
       formDispatch({ commentId: comment.id, type: "open_reply" });
-    }
+    });
+  }
 
-    if (formState.type !== null && shouldAskForConfirmation) {
-      dialogDispatch({
-        dialogType:
-          formState.type === "edit" ? "discard_edit" : "discard_reply",
-        onConfirm: openReplyForm,
-        type: "open",
-      });
-    } else {
-      openReplyForm();
-    }
+  function handleCancelEditOrReplyClick() {
+    executeWithConfirmation(() => {
+      formDispatch({ type: "close" });
+    });
   }
 
   /* --------------------------------- Markup --------------------------------- */
