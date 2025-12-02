@@ -12,6 +12,7 @@ import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
 import { FormContext } from "@/app/lib/contexts/FormContext";
+import { FormAction } from "@/app/lib/reducers/formReducer";
 
 export default function CommentCard({
   comment,
@@ -43,7 +44,37 @@ export default function CommentCard({
 
   /* ---------------------------- Helper Functions ---------------------------- */
 
-  function executeWithConfirmation(action: () => void) {
+  type OpenCloseFormActionType = Exclude<
+    FormAction["type"],
+    "change_text_area_value"
+  >;
+
+  /**
+   * Object of formDispatch calls already filled with this comment's data.
+   */
+  const formActions: Record<OpenCloseFormActionType, () => void> = {
+    close: () => {
+      formDispatch({ type: "close" });
+    },
+    open_edit: () => {
+      formDispatch({
+        commentContent: comment.content,
+        commentId: comment.id,
+        type: "open_edit",
+      });
+    },
+    open_reply: () => {
+      formDispatch({ commentId: comment.id, type: "open_reply" });
+    },
+  };
+
+  /**
+   * Wraps a formDispatch call inside logic that first checks for whether any other form is currently open and whether it is "dirty";
+   * if it is, dispatches a dialog where the confirm button would call formDispatch; otherwise, calls formDispatch immediately.
+   *
+   * @param formActionType
+   */
+  function formDispatchWrapper(formActionType: OpenCloseFormActionType) {
     const shouldAskForConfirmation =
       (formState.type === "edit" &&
         formState.textAreaValue !== formState.commentContent) ||
@@ -53,11 +84,11 @@ export default function CommentCard({
       dialogDispatch({
         dialogType:
           formState.type === "edit" ? "discard_edit" : "discard_reply",
-        onConfirm: action,
+        onConfirm: formActions[formActionType],
         type: "open",
       });
     } else {
-      action();
+      formActions[formActionType]();
     }
   }
 
@@ -83,25 +114,15 @@ export default function CommentCard({
   }
 
   function handleEditClick() {
-    executeWithConfirmation(() => {
-      formDispatch({
-        commentContent: comment.content,
-        commentId: comment.id,
-        type: "open_edit",
-      });
-    });
+    formDispatchWrapper("open_edit");
   }
 
   function handleReplyClick() {
-    executeWithConfirmation(() => {
-      formDispatch({ commentId: comment.id, type: "open_reply" });
-    });
+    formDispatchWrapper("open_reply");
   }
 
   function handleCancelEditOrReplyClick() {
-    executeWithConfirmation(() => {
-      formDispatch({ type: "close" });
-    });
+    formDispatchWrapper("close");
   }
 
   /* --------------------------------- Markup --------------------------------- */
