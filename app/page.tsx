@@ -1,5 +1,3 @@
-"use client";
-
 import AppCommentList from "@/app/components/app-comment-list";
 import AppDialog from "@/app/components/app-dialog";
 import CommentForm from "@/app/components/comment-form";

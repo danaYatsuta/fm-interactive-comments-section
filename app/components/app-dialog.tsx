@@ -1,3 +1,5 @@
+"use client";
+
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useContext, useEffect, useRef } from "react";
 
