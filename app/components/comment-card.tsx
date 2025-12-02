@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useContext } from "react";
 
 import type { Comment } from "@/app/types";
@@ -7,6 +6,7 @@ import BaseCard from "@/app/components/base-card";
 import BaseTextArea from "@/app/components/base-text-area";
 import ButtonFilled from "@/app/components/button-filled";
 import CommentCardControls from "@/app/components/comment-card-controls";
+import CommentCardHeader from "@/app/components/comment-card-header";
 import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
@@ -145,26 +145,13 @@ export default function CommentCard({
             <TimeAgoWrapper date={comment.createdAt} />
           </h2>
 
-          <div className="xs:gap-4 col-span-2 flex items-center gap-2 text-nowrap md:col-span-1">
-            <div className="relative size-8">
-              <Image alt="" fill={true} sizes="2rem" src={comment.userAvatar} />
-            </div>
-
-            {/* aria-hidden="true" on p and TimeAgo because this text is repeated in h2 above */}
-
-            <p
-              aria-hidden="true"
-              className="text-grey-800 flex items-center gap-2 font-medium"
-            >
-              <span className="max-w-28 truncate">{comment.username}</span>
-              {canUserEdit && (
-                <span className="xs:text-sm flex h-5 items-center rounded-sm bg-purple-600 px-1.5 text-xs text-white">
-                  you
-                </span>
-              )}
-            </p>
-
-            <TimeAgoWrapper date={comment.createdAt} />
+          <div className="col-span-2 md:col-span-1">
+            <CommentCardHeader
+              canUserEdit={canUserEdit}
+              createdAt={comment.createdAt}
+              userAvatar={comment.userAvatar}
+              username={comment.username}
+            />
           </div>
 
           {isEditFormOpen ? (
