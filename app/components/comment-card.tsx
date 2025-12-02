@@ -10,7 +10,7 @@ import CommentCardHeader from "@/app/components/comment-card-header";
 import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
-import { DialogContext } from "@/app/lib/contexts/DialogContext";
+import { DialogContext } from "@/app/lib/providers/dialog-provider";
 import formReducer, { FormAction } from "@/app/lib/reducers/formReducer";
 
 export default function CommentCard({

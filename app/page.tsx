@@ -1,26 +1,15 @@
 "use client";
 
-import { useReducer } from "react";
-
 import AppCommentList from "@/app/components/app-comment-list";
 import AppDialog from "@/app/components/app-dialog";
 import CommentForm from "@/app/components/comment-form";
 import exampleData from "@/app/exampleData";
-import { DialogContext } from "@/app/lib/contexts/DialogContext";
-import dialogReducer from "@/app/lib/reducers/dialogReducer";
+import { DialogProvider } from "@/app/lib/providers/dialog-provider";
 
 export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
   const comments = exampleData.comments;
-
-  const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
-    confirmButtonText: "",
-    heading: "",
-    isOpen: false,
-    message: "",
-    onConfirm: () => {},
-  });
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -30,11 +19,11 @@ export default function App() {
         Frontend Mentor | Interactive comments section
       </h1>
 
-      <DialogContext value={[dialogState, dialogDispatch]}>
+      <DialogProvider>
         <AppCommentList comments={comments} />
 
         <AppDialog />
-      </DialogContext>
+      </DialogProvider>
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
     </main>

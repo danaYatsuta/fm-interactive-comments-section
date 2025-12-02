@@ -2,7 +2,7 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useContext, useEffect, useRef } from "react";
 
 import ButtonFilled from "@/app/components/button-filled";
-import { DialogContext } from "@/app/lib/contexts/DialogContext";
+import { DialogContext } from "@/app/lib/providers/dialog-provider";
 import { tw } from "@/app/lib/utils";
 
 export default function AppDialog() {
