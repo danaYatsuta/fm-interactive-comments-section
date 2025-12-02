@@ -1,5 +1,3 @@
-"use client";
-
 import type { Comment } from "@/app/types";
 
 import BaseCard from "@/app/components/base-card";

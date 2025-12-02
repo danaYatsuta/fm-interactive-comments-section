@@ -1,3 +1,5 @@
+"use client";
+
 import { useContext, useReducer } from "react";
 
 import CommentCard from "@/app/components/comment-card";
