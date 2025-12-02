@@ -19,7 +19,7 @@ export default function CommentCardHeader({
         <Image alt="" fill={true} sizes="2rem" src={userAvatar} />
       </div>
 
-      {/* aria-hidden="true" on p and TimeAgo because this text is repeated in h2 above */}
+      {/* aria-hidden="true" on p and TimeAgo because this text is repeated in h2 in top of CommentCard */}
 
       <p
         aria-hidden="true"
