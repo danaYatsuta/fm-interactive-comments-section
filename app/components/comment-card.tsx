@@ -1,7 +1,5 @@
 "use client";
 
-import { useContext, useReducer } from "react";
-
 import type { Comment } from "@/app/types";
 
 import BaseCard from "@/app/components/base-card";
@@ -12,23 +10,25 @@ import CommentCardHeader from "@/app/components/comment-card-header";
 import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
-import { DialogContext } from "@/app/lib/providers/dialog-provider";
-import formReducer, { FormAction } from "@/app/lib/reducers/form-reducer";
+import { FormState } from "@/app/lib/reducers/form-reducer";
 
 export default function CommentCard({
   comment,
+  formState,
+  onDeleteClick,
+  onEditClick,
+  onFormCancelClick,
+  onFormTextAreaValueChange,
+  onReplyClick,
 }: Readonly<{
   comment: Comment;
+  formState: FormState;
+  onDeleteClick: () => void;
+  onEditClick: () => void;
+  onFormCancelClick: () => void;
+  onFormTextAreaValueChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onReplyClick: () => void;
 }>) {
-  /* ------------------------------- Use Context ------------------------------ */
-
-  const [formState, formDispatch] = useReducer(formReducer, {
-    commentId: null,
-    textAreaValue: "",
-    type: null,
-  });
-  const [, dialogDispatch] = useContext(DialogContext);
-
   /* ------------------------------ Derived State ----------------------------- */
 
   // TODO this is a mock for checking whether comment belongs to current user
@@ -46,89 +46,6 @@ export default function CommentCard({
 
   const isReplyFormOpen =
     formState.type === "reply" && formState.commentId === comment.id;
-
-  /* ---------------------------- Helper Functions ---------------------------- */
-
-  type OpenCloseFormActionType = Exclude<
-    FormAction["type"],
-    "change_text_area_value"
-  >;
-
-  /**
-   * Object of formDispatch calls already filled with this comment's data.
-   */
-  const formActions: Record<OpenCloseFormActionType, () => void> = {
-    close: () => {
-      formDispatch({ type: "close" });
-    },
-    open_edit: () => {
-      formDispatch({
-        commentContent: comment.content,
-        commentId: comment.id,
-        type: "open_edit",
-      });
-    },
-    open_reply: () => {
-      formDispatch({ commentId: comment.id, type: "open_reply" });
-    },
-  };
-
-  /**
-   * Wraps a formDispatch call inside logic that first checks for whether any other form is currently open and whether it is "dirty";
-   * if it is, dispatches a dialog where the confirm button would call formDispatch; otherwise, calls formDispatch immediately.
-   *
-   * @param formActionType
-   */
-  function formDispatchWrapper(formActionType: OpenCloseFormActionType) {
-    const shouldAskForConfirmation =
-      (formState.type === "edit" &&
-        formState.textAreaValue.trim() !== formState.commentContent) ||
-      (formState.type === "reply" && formState.textAreaValue.trim() !== "");
-
-    if (shouldAskForConfirmation) {
-      dialogDispatch({
-        dialogType:
-          formState.type === "edit" ? "discard_edit" : "discard_reply",
-        onConfirm: formActions[formActionType],
-        type: "open",
-      });
-    } else {
-      formActions[formActionType]();
-    }
-  }
-
-  /* -------------------------------- Handlers -------------------------------- */
-
-  function handleFormTextAreaValueChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) {
-    formDispatch({
-      textAreaValue: e.target.value,
-      type: "change_text_area_value",
-    });
-  }
-
-  function handleDeleteClick() {
-    dialogDispatch({
-      dialogType: "delete_comment",
-      onConfirm: () => {
-        console.log(`Deleting comment with id ${comment.id}`);
-      },
-      type: "open",
-    });
-  }
-
-  function handleEditClick() {
-    formDispatchWrapper("open_edit");
-  }
-
-  function handleReplyClick() {
-    formDispatchWrapper("open_reply");
-  }
-
-  function handleCancelEditOrReplyClick() {
-    formDispatchWrapper("close");
-  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -164,7 +81,7 @@ export default function CommentCard({
             <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
               <div className="col-span-2">
                 <BaseTextArea
-                  onChange={handleFormTextAreaValueChange}
+                  onChange={onFormTextAreaValueChange}
                   placeholder="Edit the comment..."
                   value={formState.textAreaValue}
                 />
@@ -173,7 +90,7 @@ export default function CommentCard({
               <div className="col-start-2 flex justify-end gap-2">
                 <ButtonFilled
                   color="pink"
-                  onClick={handleCancelEditOrReplyClick}
+                  onClick={onFormCancelClick}
                   text="Cancel"
                 />
 
@@ -198,9 +115,9 @@ export default function CommentCard({
               <div className="self-center justify-self-end md:col-start-3 md:row-start-1">
                 <CommentCardControls
                   canUserEdit={canUserEdit}
-                  onDeleteClick={handleDeleteClick}
-                  onEditClick={handleEditClick}
-                  onReplyClick={handleReplyClick}
+                  onDeleteClick={onDeleteClick}
+                  onEditClick={onEditClick}
+                  onReplyClick={onReplyClick}
                 />
               </div>
             </>
@@ -215,8 +132,8 @@ export default function CommentCard({
       {isReplyFormOpen && (
         <CommentForm
           buttonText="Reply"
-          onCancelClick={handleCancelEditOrReplyClick}
-          onTextAreaChange={handleFormTextAreaValueChange}
+          onCancelClick={onFormCancelClick}
+          onTextAreaChange={onFormTextAreaValueChange}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
           textAreaValue={formState.textAreaValue}
