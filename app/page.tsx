@@ -7,21 +7,12 @@ import AppDialog from "@/app/components/app-dialog";
 import CommentForm from "@/app/components/comment-form";
 import exampleData from "@/app/exampleData";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
-import { FormContext } from "@/app/lib/contexts/FormContext";
 import dialogReducer from "@/app/lib/reducers/dialogReducer";
-import formReducer from "@/app/lib/reducers/formReducer";
 
 export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
   const comments = exampleData.comments;
-
-  // Info about open edit or reply form; only one edit or reply form can be shown at once
-  const [formState, formDispatch] = useReducer(formReducer, {
-    commentId: null,
-    textAreaValue: "",
-    type: null,
-  });
 
   const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
     confirmButtonText: "",
@@ -40,9 +31,7 @@ export default function App() {
       </h1>
 
       <DialogContext value={[dialogState, dialogDispatch]}>
-        <FormContext value={[formState, formDispatch]}>
-          <AppCommentList comments={comments} />
-        </FormContext>
+        <AppCommentList comments={comments} />
 
         <AppDialog />
       </DialogContext>

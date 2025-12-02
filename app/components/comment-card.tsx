@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useReducer } from "react";
 
 import type { Comment } from "@/app/types";
 
@@ -11,8 +11,7 @@ import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
 import { DialogContext } from "@/app/lib/contexts/DialogContext";
-import { FormContext } from "@/app/lib/contexts/FormContext";
-import { FormAction } from "@/app/lib/reducers/formReducer";
+import formReducer, { FormAction } from "@/app/lib/reducers/formReducer";
 
 export default function CommentCard({
   comment,
@@ -21,7 +20,11 @@ export default function CommentCard({
 }>) {
   /* ------------------------------- Use Context ------------------------------ */
 
-  const [formState, formDispatch] = useContext(FormContext);
+  const [formState, formDispatch] = useReducer(formReducer, {
+    commentId: null,
+    textAreaValue: "",
+    type: null,
+  });
   const [, dialogDispatch] = useContext(DialogContext);
 
   /* ------------------------------ Derived State ----------------------------- */
