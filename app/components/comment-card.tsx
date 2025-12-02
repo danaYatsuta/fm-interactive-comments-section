@@ -11,7 +11,7 @@ import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
 import { DialogContext } from "@/app/lib/providers/dialog-provider";
-import formReducer, { FormAction } from "@/app/lib/reducers/formReducer";
+import formReducer, { FormAction } from "@/app/lib/reducers/form-reducer";
 
 export default function CommentCard({
   comment,
