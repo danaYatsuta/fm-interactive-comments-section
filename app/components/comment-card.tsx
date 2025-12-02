@@ -77,8 +77,8 @@ export default function CommentCard({
   function formDispatchWrapper(formActionType: OpenCloseFormActionType) {
     const shouldAskForConfirmation =
       (formState.type === "edit" &&
-        formState.textAreaValue !== formState.commentContent) ||
-      (formState.type === "reply" && formState.textAreaValue !== "");
+        formState.textAreaValue.trim() !== formState.commentContent) ||
+      (formState.type === "reply" && formState.textAreaValue.trim() !== "");
 
     if (shouldAskForConfirmation) {
       dialogDispatch({
@@ -98,7 +98,7 @@ export default function CommentCard({
     e: React.ChangeEvent<HTMLTextAreaElement>,
   ) {
     formDispatch({
-      textAreaValue: e.target.value.trim(),
+      textAreaValue: e.target.value,
       type: "change_text_area_value",
     });
   }
