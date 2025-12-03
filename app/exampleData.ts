@@ -1,4 +1,4 @@
-import { Comment } from "@/app/types";
+import type { Comment } from "@/app/types";
 
 const exampleData: {
   comments: Comment[];

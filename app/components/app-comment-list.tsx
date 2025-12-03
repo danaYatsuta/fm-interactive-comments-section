@@ -1,11 +1,13 @@
 import { useReducer } from "react";
 
-import CommentCard from "@/app/components/comment-card";
-import formReducer, {
+import type {
   FormAction,
   FormState,
 } from "@/app/lib/reducers/form-reducer";
-import { Comment } from "@/app/types";
+import type { Comment } from "@/app/types";
+
+import CommentCard from "@/app/components/comment-card";
+import formReducer from "@/app/lib/reducers/form-reducer";
 
 export type OpenDialogFunction = (options: {
   currentFormStateType: NonNullable<FormState["type"]>;

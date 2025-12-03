@@ -1,4 +1,6 @@
-import TimeAgo, { Formatter } from "react-timeago";
+import type { Formatter } from "react-timeago";
+
+import TimeAgo from "react-timeago";
 import defaultFormatter from "react-timeago/defaultFormatter";
 
 // For some reason, just using nextFormatter without any arguments causes an error: https://github.com/nmn/react-timeago/issues/233

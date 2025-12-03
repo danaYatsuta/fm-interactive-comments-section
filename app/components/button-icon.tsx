@@ -1,4 +1,5 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import type { StaticImport } from "next/dist/shared/lib/get-img-props";
+
 import Image from "next/image";
 
 import { tw } from "@/app/lib/utils";

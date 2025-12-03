@@ -1,3 +1,4 @@
+import type { FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
 import BaseCard from "@/app/components/base-card";
@@ -8,7 +9,6 @@ import CommentCardHeader from "@/app/components/comment-card-header";
 import CommentCardVoteButtons from "@/app/components/comment-card-vote-buttons";
 import CommentForm from "@/app/components/comment-form";
 import TimeAgoWrapper from "@/app/components/time-ago-wrapper";
-import { FormState } from "@/app/lib/reducers/form-reducer";
 
 export default function CommentCard({
   comment,

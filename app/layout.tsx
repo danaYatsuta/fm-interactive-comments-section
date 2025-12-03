@@ -1,5 +1,6 @@
 import "./globals.css";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+
 import { Rubik } from "next/font/google";
 
 const rubik = Rubik({ weight: ["400", "500", "700"] });
