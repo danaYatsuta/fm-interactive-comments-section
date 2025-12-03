@@ -1,21 +1,26 @@
-"use client";
-
-import { useContext, useReducer } from "react";
+import { useReducer } from "react";
 
 import CommentCard from "@/app/components/comment-card";
-import { DialogContext } from "@/app/lib/providers/dialog-provider";
-import formReducer, { FormAction } from "@/app/lib/reducers/form-reducer";
+import formReducer, {
+  FormAction,
+  FormState,
+} from "@/app/lib/reducers/form-reducer";
 import { Comment } from "@/app/types";
+
+export type OpenDialogFunction = (options: {
+  currentFormStateType: NonNullable<FormState["type"]>;
+  onConfirm: () => void;
+}) => void;
 
 export default function AppCommentList({
   comments,
+  onCommentDeleteClick,
+  openDialog,
 }: Readonly<{
   comments: Comment[];
+  onCommentDeleteClick: (commentId: number) => void;
+  openDialog: OpenDialogFunction;
 }>) {
-  /* ------------------------------- Use Context ------------------------------ */
-
-  const [, dialogDispatch] = useContext(DialogContext);
-
   /* ---------------------------------- State --------------------------------- */
 
   const [formState, formDispatch] = useReducer(formReducer, {
@@ -28,7 +33,7 @@ export default function AppCommentList({
 
   /**
    * Wraps a formDispatch call inside logic that first checks for whether any other form is currently open and whether it is "dirty";
-   * if it is, dispatches a dialog where the confirm button would call formDispatch; otherwise, calls formDispatch immediately.
+   * if it is, opens a dialog where the confirm button would call formDispatch; otherwise, calls formDispatch immediately.
    *
    * @param formAction
    */
@@ -38,12 +43,10 @@ export default function AppCommentList({
         formState.textAreaValue.trim() !== formState.commentContent) ||
       (formState.type === "reply" && formState.textAreaValue.trim() !== "");
 
-    if (shouldAskForConfirmation) {
-      dialogDispatch({
-        dialogType:
-          formState.type === "edit" ? "discard_edit" : "discard_reply",
+    if (formState.type !== null && shouldAskForConfirmation) {
+      openDialog({
+        currentFormStateType: formState.type,
         onConfirm: () => formDispatch(formAction),
-        type: "open",
       });
     } else {
       formDispatch(formAction);
@@ -58,16 +61,6 @@ export default function AppCommentList({
     formDispatch({
       textAreaValue: e.target.value,
       type: "change_text_area_value",
-    });
-  }
-
-  function handleCommentDeleteClick(commentId: number) {
-    dialogDispatch({
-      dialogType: "delete_comment",
-      onConfirm: () => {
-        console.log(`Deleting comment with id ${commentId}`);
-      },
-      type: "open",
     });
   }
 
@@ -113,7 +106,7 @@ export default function AppCommentList({
           <CommentCard
             comment={reply}
             formState={formState}
-            onDeleteClick={() => handleCommentDeleteClick(reply.id)}
+            onDeleteClick={() => onCommentDeleteClick(reply.id)}
             onEditClick={() => handleCommentEditClick(reply.id)}
             onFormCancelClick={handleCommentFormCancelClick}
             onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
@@ -128,7 +121,7 @@ export default function AppCommentList({
         <CommentCard
           comment={topLevelComment}
           formState={formState}
-          onDeleteClick={() => handleCommentDeleteClick(topLevelComment.id)}
+          onDeleteClick={() => onCommentDeleteClick(topLevelComment.id)}
           onEditClick={() => handleCommentEditClick(topLevelComment.id)}
           onFormCancelClick={handleCommentFormCancelClick}
           onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}

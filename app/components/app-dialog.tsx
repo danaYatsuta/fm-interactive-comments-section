@@ -1,17 +1,24 @@
-"use client";
-
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import ButtonFilled from "@/app/components/button-filled";
-import { DialogContext } from "@/app/lib/providers/dialog-provider";
 import { tw } from "@/app/lib/utils";
 
-export default function AppDialog() {
-  /* ------------------------------- Use Context ------------------------------ */
-
-  const [dialogState, dialogDispatch] = useContext(DialogContext);
-
+export default function AppDialog({
+  confirmButtonText,
+  heading,
+  isOpen,
+  message,
+  onCancelClick,
+  onConfirmClick,
+}: Readonly<{
+  confirmButtonText: string;
+  heading: string;
+  isOpen: boolean;
+  message: string;
+  onCancelClick: () => void;
+  onConfirmClick: () => void;
+}>) {
   /* ---------------------------------- Hooks --------------------------------- */
 
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -19,25 +26,14 @@ export default function AppDialog() {
   useEffect(() => {
     if (dialogRef.current === null) return;
 
-    if (dialogState.isOpen) {
+    if (isOpen) {
       dialogRef.current.showModal();
       disableBodyScroll(dialogRef.current);
     } else {
       dialogRef.current.close();
       enableBodyScroll(dialogRef.current);
     }
-  }, [dialogState.isOpen]);
-
-  /* -------------------------------- Handlers -------------------------------- */
-
-  function handleCancelClick() {
-    dialogDispatch({ type: "close" });
-  }
-
-  function handleConfirmClick() {
-    dialogState.onConfirm();
-    dialogDispatch({ type: "close" });
-  }
+  }, [isOpen]);
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -53,24 +49,24 @@ export default function AppDialog() {
     >
       <div className="flex max-w-100 flex-col gap-3.5 rounded-lg bg-white px-7 py-6 md:gap-5 md:rounded-xl md:p-8">
         <h3 className="text-grey-800 xs:text-xl text-lg font-medium md:text-2xl">
-          {dialogState.heading}
+          {heading}
         </h3>
 
-        <p>{dialogState.message}</p>
+        <p>{message}</p>
 
         <div className="flex gap-3">
           <ButtonFilled
             color="grey"
             grow
-            onClick={handleCancelClick}
+            onClick={onCancelClick}
             text="No, cancel"
           />
 
           <ButtonFilled
             color="pink"
             grow
-            onClick={handleConfirmClick}
-            text={dialogState.confirmButtonText}
+            onClick={onConfirmClick}
+            text={confirmButtonText}
           />
         </div>
       </div>

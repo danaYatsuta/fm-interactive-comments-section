@@ -1,13 +1,60 @@
-import AppCommentList from "@/app/components/app-comment-list";
+"use client";
+
+import { useReducer } from "react";
+
+import AppCommentList, {
+  OpenDialogFunction,
+} from "@/app/components/app-comment-list";
 import AppDialog from "@/app/components/app-dialog";
 import CommentForm from "@/app/components/comment-form";
 import exampleData from "@/app/exampleData";
-import { DialogProvider } from "@/app/lib/providers/dialog-provider";
+import { dialogReducer } from "@/app/lib/reducers/dialog-reducer";
 
 export default function App() {
   /* ---------------------------------- State --------------------------------- */
 
+  const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
+    confirmButtonText: "",
+    heading: "",
+    isOpen: false,
+    message: "",
+    onConfirm: () => {},
+  });
+
   const comments = exampleData.comments;
+
+  /* -------------------------------- Handlers -------------------------------- */
+
+  function handleCommentDeleteClick(commentId: number) {
+    dialogDispatch({
+      dialogType: "delete_comment",
+      onConfirm: () => {
+        console.log(`Deleting comment with id ${commentId}`);
+      },
+      type: "open",
+    });
+  }
+
+  const openDialog: OpenDialogFunction = function ({
+    currentFormStateType,
+    onConfirm,
+  }) {
+    dialogDispatch({
+      dialogType:
+        currentFormStateType === "edit" ? "discard_edit" : "discard_reply",
+      onConfirm,
+      type: "open",
+    });
+  };
+
+  function handleDialogCancelClick() {
+    dialogDispatch({ type: "close" });
+  }
+
+  function handleDialogConfirmClick() {
+    dialogState.onConfirm();
+    dialogDispatch({ type: "close" });
+  }
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -17,11 +64,20 @@ export default function App() {
         Frontend Mentor | Interactive comments section
       </h1>
 
-      <DialogProvider>
-        <AppCommentList comments={comments} />
+      <AppCommentList
+        comments={comments}
+        onCommentDeleteClick={handleCommentDeleteClick}
+        openDialog={openDialog}
+      />
 
-        <AppDialog />
-      </DialogProvider>
+      <AppDialog
+        confirmButtonText={dialogState.confirmButtonText}
+        heading={dialogState.heading}
+        isOpen={dialogState.isOpen}
+        message={dialogState.message}
+        onCancelClick={handleDialogCancelClick}
+        onConfirmClick={handleDialogConfirmClick}
+      />
 
       <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
     </main>

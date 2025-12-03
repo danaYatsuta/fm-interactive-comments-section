@@ -1,11 +1,3 @@
-"use client";
-
-import { createContext, useReducer } from "react";
-
-export const DialogContext = createContext(
-  {} as [DialogState, React.ActionDispatch<[action: DialogAction]>],
-);
-
 type DialogAction =
   | {
       dialogType: DialogType;
@@ -25,22 +17,6 @@ interface DialogState {
 }
 
 type DialogType = "delete_comment" | "discard_edit" | "discard_reply";
-
-export function DialogProvider({ children }: { children: React.ReactNode }) {
-  const [dialogState, dialogDispatch] = useReducer(dialogReducer, {
-    confirmButtonText: "",
-    heading: "",
-    isOpen: false,
-    message: "",
-    onConfirm: () => {},
-  });
-
-  return (
-    <DialogContext value={[dialogState, dialogDispatch]}>
-      {children}
-    </DialogContext>
-  );
-}
 
 const confirmButtonTexts: Record<DialogType, string> = {
   delete_comment: "Yes, delete",
@@ -63,7 +39,10 @@ const messages: Record<DialogType, string> = {
     "Are you sure you want to stop writing a reply? This will discard the reply draft and can't be undone.",
 };
 
-function dialogReducer(state: DialogState, action: DialogAction): DialogState {
+export function dialogReducer(
+  state: DialogState,
+  action: DialogAction,
+): DialogState {
   switch (action.type) {
     case "close": {
       return {
