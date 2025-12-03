@@ -1,9 +1,6 @@
 import { useReducer } from "react";
 
-import type {
-  FormAction,
-  FormState,
-} from "@/app/lib/reducers/form-reducer";
+import type { FormAction, FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
 import CommentCard from "@/app/components/comment-card";

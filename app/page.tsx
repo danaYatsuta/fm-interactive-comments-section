@@ -2,9 +2,7 @@
 
 import { useReducer } from "react";
 
-import type {
-  OpenDialogFunction,
-} from "@/app/components/app-comment-list";
+import type { OpenDialogFunction } from "@/app/components/app-comment-list";
 
 import AppCommentList from "@/app/components/app-comment-list";
 import AppDialog from "@/app/components/app-dialog";
