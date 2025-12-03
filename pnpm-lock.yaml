@@ -20,6 +20,9 @@ importers:
       react-dom:
         specifier: 19.2.0
         version: 19.2.0(react@19.2.0)
+      react-flip-toolkit:
+        specifier: ^7.2.4
+        version: 7.2.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react-timeago:
         specifier: ^8.3.0
         version: 8.3.0(react@19.2.0)
@@ -1120,6 +1123,10 @@ packages:
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
+  flip-toolkit@7.2.4:
+    resolution: {integrity: sha512-NT81ikyHPk72riMe1U01x698YIMSypMF5mQBhRklWVgf2xgWH3EPfrrVRAkz/+TSCq0rLPsr/uKIYkwHrowKZQ==}
+    engines: {node: '>=8', npm: '>=5'}
+
   for-each@0.3.5:
     resolution: {integrity: sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg==}
     engines: {node: '>= 0.4'}
@@ -1723,6 +1730,13 @@ packages:
     peerDependencies:
       react: ^19.2.0
 
+  react-flip-toolkit@7.2.4:
+    resolution: {integrity: sha512-+aZBZwzHBDfJzMRLjAAOKiBkrk8PV0YFVE0k1x85+UsykApLwg8a0LlQ5H80uFltFZmGtrQ7EE1krhiZ1jI5ig==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '>= 16.x'
+      react-dom: '>= 16.x'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -1742,6 +1756,9 @@ packages:
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
+
+  rematrix@0.2.2:
+    resolution: {integrity: sha512-agFFS3RzrLXJl5LY5xg/xYyXvUuVAnkhgKO7RaO9J1Ssth6yvbO+PIiV67V59MB5NCdAK2flvGvNT4mdKVniFA==}
 
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
@@ -3207,6 +3224,10 @@ snapshots:
 
   flatted@3.3.3: {}
 
+  flip-toolkit@7.2.4:
+    dependencies:
+      rematrix: 0.2.2
+
   for-each@0.3.5:
     dependencies:
       is-callable: 1.2.7
@@ -3733,6 +3754,13 @@ snapshots:
       react: 19.2.0
       scheduler: 0.27.0
 
+  react-flip-toolkit@7.2.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
+    dependencies:
+      flip-toolkit: 7.2.4
+      prop-types: 15.8.1
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+
   react-is@16.13.1: {}
 
   react-timeago@8.3.0(react@19.2.0):
@@ -3760,6 +3788,8 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       set-function-name: 2.0.2
+
+  rematrix@0.2.2: {}
 
   resolve-from@4.0.0: {}
 
