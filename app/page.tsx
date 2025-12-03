@@ -56,6 +56,16 @@ export default function App() {
     dialogDispatch({ type: "close" });
   }
 
+  function handleCreateCommentSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    console.log(`Creating comment: ${formData.get("content")}`);
+
+    e.currentTarget.reset();
+  }
+
   /* --------------------------------- Markup --------------------------------- */
 
   return (
@@ -79,7 +89,11 @@ export default function App() {
         onConfirmClick={handleDialogConfirmClick}
       />
 
-      <CommentForm buttonText="Send" textAreaPlaceholder="Add a comment..." />
+      <CommentForm
+        buttonText="Send"
+        onSubmit={handleCreateCommentSubmit}
+        textAreaPlaceholder="Add a comment..."
+      />
     </main>
   );
 }

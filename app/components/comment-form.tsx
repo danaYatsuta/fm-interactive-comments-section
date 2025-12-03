@@ -8,6 +8,7 @@ import commentsData from "@/app/exampleData";
 export default function CommentForm({
   buttonText,
   onCancelClick,
+  onSubmit,
   onTextAreaChange,
   showCancelButton = false,
   textAreaPlaceholder,
@@ -15,6 +16,7 @@ export default function CommentForm({
 }: Readonly<{
   buttonText: string;
   onCancelClick?: () => void;
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   showCancelButton?: boolean;
   textAreaPlaceholder?: string;
@@ -24,7 +26,7 @@ export default function CommentForm({
 
   return (
     <BaseCard>
-      <form className="grid gap-4 md:flex">
+      <form className="grid gap-4 md:flex" onSubmit={onSubmit}>
         <div className="col-span-2 grow">
           <BaseTextArea
             onChange={onTextAreaChange}

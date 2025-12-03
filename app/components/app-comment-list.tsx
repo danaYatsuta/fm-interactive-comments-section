@@ -87,6 +87,36 @@ export default function AppCommentList({
     formDispatchWithConfirmation({ type: "close" });
   }
 
+  function handleCreateReplySubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    commentId: number,
+  ) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    console.log(
+      `Creating reply to comment with id ${commentId}: ${formData.get("content")}`,
+    );
+
+    formDispatch({ type: "close" });
+  }
+
+  function handleEditCommentSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+    commentId: number,
+  ) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    console.log(
+      `Editing comment with id ${commentId}: ${formData.get("content")}`,
+    );
+
+    formDispatch({ type: "close" });
+  }
+
   /* --------------------------------- Markup --------------------------------- */
 
   const topLevelComments = comments.filter(
@@ -106,8 +136,10 @@ export default function AppCommentList({
           <CommentCard
             comment={reply}
             formState={formState}
+            onCreateReplySubmit={(e) => handleCreateReplySubmit(e, reply.id)}
             onDeleteClick={() => onCommentDeleteClick(reply.id)}
             onEditClick={() => handleCommentEditClick(reply.id)}
+            onEditCommentSubmit={(e) => handleEditCommentSubmit(e, reply.id)}
             onFormCancelClick={handleCommentFormCancelClick}
             onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
             onReplyClick={() => handleCommentReplyClick(reply.id)}
@@ -121,8 +153,14 @@ export default function AppCommentList({
         <CommentCard
           comment={topLevelComment}
           formState={formState}
+          onCreateReplySubmit={(e) =>
+            handleCreateReplySubmit(e, topLevelComment.id)
+          }
           onDeleteClick={() => onCommentDeleteClick(topLevelComment.id)}
           onEditClick={() => handleCommentEditClick(topLevelComment.id)}
+          onEditCommentSubmit={(e) =>
+            handleEditCommentSubmit(e, topLevelComment.id)
+          }
           onFormCancelClick={handleCommentFormCancelClick}
           onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
           onReplyClick={() => handleCommentReplyClick(topLevelComment.id)}

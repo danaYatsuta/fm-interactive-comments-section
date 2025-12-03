@@ -13,16 +13,20 @@ import { FormState } from "@/app/lib/reducers/form-reducer";
 export default function CommentCard({
   comment,
   formState,
+  onCreateReplySubmit,
   onDeleteClick,
   onEditClick,
+  onEditCommentSubmit,
   onFormCancelClick,
   onFormTextAreaValueChange,
   onReplyClick,
 }: Readonly<{
   comment: Comment;
   formState: FormState;
+  onCreateReplySubmit: React.FormEventHandler<HTMLFormElement>;
   onDeleteClick: () => void;
   onEditClick: () => void;
+  onEditCommentSubmit: React.FormEventHandler<HTMLFormElement>;
   onFormCancelClick: () => void;
   onFormTextAreaValueChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   onReplyClick: () => void;
@@ -76,7 +80,10 @@ export default function CommentCard({
 
           {isEditFormOpen ? (
             // row-start-2 might seem redundant but everything breaks without it for some reason
-            <form className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2">
+            <form
+              className="col-span-2 col-start-1 row-span-2 row-start-2 grid grid-cols-subgrid grid-rows-subgrid gap-4 md:col-start-2"
+              onSubmit={onEditCommentSubmit}
+            >
               <div className="col-span-2">
                 <BaseTextArea
                   onChange={onFormTextAreaValueChange}
@@ -131,6 +138,7 @@ export default function CommentCard({
         <CommentForm
           buttonText="Reply"
           onCancelClick={onFormCancelClick}
+          onSubmit={onCreateReplySubmit}
           onTextAreaChange={onFormTextAreaValueChange}
           showCancelButton={true}
           textAreaPlaceholder="Reply to the comment..."
