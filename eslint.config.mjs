@@ -10,6 +10,7 @@ const eslintConfig = defineConfig([
   {
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
+      "react/prefer-read-only-props": "error",
     },
   },
   // Override default ignores of eslint-config-next.

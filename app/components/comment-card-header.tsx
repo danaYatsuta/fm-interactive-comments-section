@@ -7,12 +7,12 @@ export default function CommentCardHeader({
   createdAt,
   userAvatar,
   username,
-}: {
+}: Readonly<{
   canUserEdit: boolean;
   createdAt: string;
   userAvatar: string;
   username: string;
-}) {
+}>) {
   return (
     <div className="xs:gap-4 flex items-center gap-2 text-nowrap">
       <div className="relative size-8">
