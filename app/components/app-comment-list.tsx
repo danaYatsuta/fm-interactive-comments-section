@@ -1,121 +1,34 @@
-import { useReducer } from "react";
-
-import type { FormAction, FormState } from "@/app/lib/reducers/form-reducer";
+import type { FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
 import CommentCard from "@/app/components/comment-card";
-import formReducer from "@/app/lib/reducers/form-reducer";
 
-export type OpenDialogFunction = (options: {
-  currentFormStateType: NonNullable<FormState["type"]>;
-  onConfirm: () => void;
-}) => void;
+type FormEventHandlerWithCommentId = (
+  e: React.FormEvent<HTMLFormElement>,
+  commentId: number,
+) => void;
 
 export default function AppCommentList({
   comments,
+  formState,
   onCommentDeleteClick,
-  openDialog,
+  onCommentEditClick,
+  onCommentFormCancelClick,
+  onCommentFormTextAreaValueChange,
+  onCommentReplyClick,
+  onCreateReplySubmit,
+  onEditCommentSubmit,
 }: Readonly<{
   comments: Comment[];
+  formState: FormState;
   onCommentDeleteClick: (commentId: number) => void;
-  openDialog: OpenDialogFunction;
+  onCommentEditClick: (commentId: number) => void;
+  onCommentFormCancelClick: () => void;
+  onCommentFormTextAreaValueChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onCommentReplyClick: (commentId: number) => void;
+  onCreateReplySubmit: FormEventHandlerWithCommentId;
+  onEditCommentSubmit: FormEventHandlerWithCommentId;
 }>) {
-  /* ---------------------------------- State --------------------------------- */
-
-  const [formState, formDispatch] = useReducer(formReducer, {
-    commentId: null,
-    textAreaValue: "",
-    type: null,
-  });
-
-  /* ---------------------------- Helper Functions ---------------------------- */
-
-  /**
-   * Wraps a formDispatch call inside logic that first checks for whether any other form is currently open and whether it is "dirty";
-   * if it is, opens a dialog where the confirm button would call formDispatch; otherwise, calls formDispatch immediately.
-   *
-   * @param formAction
-   */
-  function formDispatchWithConfirmation(formAction: FormAction) {
-    const shouldAskForConfirmation =
-      (formState.type === "edit" &&
-        formState.textAreaValue.trim() !== formState.commentContent) ||
-      (formState.type === "reply" && formState.textAreaValue.trim() !== "");
-
-    if (formState.type !== null && shouldAskForConfirmation) {
-      openDialog({
-        currentFormStateType: formState.type,
-        onConfirm: () => formDispatch(formAction),
-      });
-    } else {
-      formDispatch(formAction);
-    }
-  }
-
-  /* -------------------------------- Handlers -------------------------------- */
-
-  function handleCommentFormTextAreaValueChange(
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) {
-    formDispatch({
-      textAreaValue: e.target.value,
-      type: "change_text_area_value",
-    });
-  }
-
-  function handleCommentEditClick(commentId: number) {
-    const comment = comments.find((comment) => comment.id === commentId);
-
-    if (comment === undefined) return;
-
-    formDispatchWithConfirmation({
-      commentContent: comment.content,
-      commentId,
-      type: "open_edit",
-    });
-  }
-
-  function handleCommentReplyClick(commentId: number) {
-    formDispatchWithConfirmation({
-      commentId,
-      type: "open_reply",
-    });
-  }
-
-  function handleCommentFormCancelClick() {
-    formDispatchWithConfirmation({ type: "close" });
-  }
-
-  function handleCreateReplySubmit(
-    e: React.FormEvent<HTMLFormElement>,
-    commentId: number,
-  ) {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-
-    console.log(
-      `Creating reply to comment with id ${commentId}: ${formData.get("content")}`,
-    );
-
-    formDispatch({ type: "close" });
-  }
-
-  function handleEditCommentSubmit(
-    e: React.FormEvent<HTMLFormElement>,
-    commentId: number,
-  ) {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-
-    console.log(
-      `Editing comment with id ${commentId}: ${formData.get("content")}`,
-    );
-
-    formDispatch({ type: "close" });
-  }
-
   /* --------------------------------- Markup --------------------------------- */
 
   const topLevelComments = comments.filter(
@@ -135,13 +48,13 @@ export default function AppCommentList({
           <CommentCard
             comment={reply}
             formState={formState}
-            onCreateReplySubmit={(e) => handleCreateReplySubmit(e, reply.id)}
+            onCreateReplySubmit={(e) => onCreateReplySubmit(e, reply.id)}
             onDeleteClick={() => onCommentDeleteClick(reply.id)}
-            onEditClick={() => handleCommentEditClick(reply.id)}
-            onEditCommentSubmit={(e) => handleEditCommentSubmit(e, reply.id)}
-            onFormCancelClick={handleCommentFormCancelClick}
-            onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
-            onReplyClick={() => handleCommentReplyClick(reply.id)}
+            onEditClick={() => onCommentEditClick(reply.id)}
+            onEditCommentSubmit={(e) => onEditCommentSubmit(e, reply.id)}
+            onFormCancelClick={onCommentFormCancelClick}
+            onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
+            onReplyClick={() => onCommentReplyClick(reply.id)}
           />
         </li>
       );
@@ -153,16 +66,16 @@ export default function AppCommentList({
           comment={topLevelComment}
           formState={formState}
           onCreateReplySubmit={(e) =>
-            handleCreateReplySubmit(e, topLevelComment.id)
+            onCreateReplySubmit(e, topLevelComment.id)
           }
           onDeleteClick={() => onCommentDeleteClick(topLevelComment.id)}
-          onEditClick={() => handleCommentEditClick(topLevelComment.id)}
+          onEditClick={() => onCommentEditClick(topLevelComment.id)}
           onEditCommentSubmit={(e) =>
-            handleEditCommentSubmit(e, topLevelComment.id)
+            onEditCommentSubmit(e, topLevelComment.id)
           }
-          onFormCancelClick={handleCommentFormCancelClick}
-          onFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
-          onReplyClick={() => handleCommentReplyClick(topLevelComment.id)}
+          onFormCancelClick={onCommentFormCancelClick}
+          onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
+          onReplyClick={() => onCommentReplyClick(topLevelComment.id)}
         />
 
         {replyCards.length !== 0 && (
