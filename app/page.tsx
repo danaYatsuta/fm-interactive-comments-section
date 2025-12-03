@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducer } from "react";
+import { Flipper } from "react-flip-toolkit";
 
 import type { FormAction } from "@/app/lib/reducers/form-reducer";
 
@@ -160,22 +161,32 @@ export default function App() {
   /* --------------------------------- Markup --------------------------------- */
 
   return (
-    <main className="mx-4 my-8 flex flex-col gap-4 md:mx-auto md:my-16 md:w-184 md:gap-5">
+    <main className="mx-4 my-8 md:mx-auto md:my-16 md:w-184">
       <h1 className="sr-only">
         Frontend Mentor | Interactive comments section
       </h1>
 
-      <AppCommentList
-        comments={comments}
-        formState={formState}
-        onCommentDeleteClick={handleCommentDeleteClick}
-        onCommentEditClick={handleCommentEditClick}
-        onCommentFormCancelClick={handleCommentFormCancelClick}
-        onCommentFormTextAreaValueChange={handleCommentFormTextAreaValueChange}
-        onCommentReplyClick={handleCommentReplyClick}
-        onCreateReplySubmit={handleCreateReplySubmit}
-        onEditCommentSubmit={handleEditCommentSubmit}
-      />
+      <Flipper className="flex flex-col gap-4 md:gap-5" flipKey={formState}>
+        <AppCommentList
+          comments={comments}
+          formState={formState}
+          onCommentDeleteClick={handleCommentDeleteClick}
+          onCommentEditClick={handleCommentEditClick}
+          onCommentFormCancelClick={handleCommentFormCancelClick}
+          onCommentFormTextAreaValueChange={
+            handleCommentFormTextAreaValueChange
+          }
+          onCommentReplyClick={handleCommentReplyClick}
+          onCreateReplySubmit={handleCreateReplySubmit}
+          onEditCommentSubmit={handleEditCommentSubmit}
+        />
+
+        <CommentForm
+          buttonText="Send"
+          onSubmit={handleCreateCommentSubmit}
+          textAreaPlaceholder="Add a comment..."
+        />
+      </Flipper>
 
       <AppDialog
         confirmButtonText={dialogState.confirmButtonText}
@@ -184,12 +195,6 @@ export default function App() {
         message={dialogState.message}
         onCancelClick={handleDialogCancelClick}
         onConfirmClick={handleDialogConfirmClick}
-      />
-
-      <CommentForm
-        buttonText="Send"
-        onSubmit={handleCreateCommentSubmit}
-        textAreaPlaceholder="Add a comment..."
       />
     </main>
   );
