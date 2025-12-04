@@ -54,7 +54,9 @@ export default function CommentCard({
   /* --------------------------------- Markup --------------------------------- */
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className={`${isReplyFormOpen ? "gap-2" : "gap-0"} flex flex-col duration-500 not-motion-reduce:transition-[gap]`}
+    >
       {/* 
         Using aria-labelledby on visually hidden element instead of aria-label
         because there is no way to put time ago inside attribute
@@ -137,7 +139,7 @@ export default function CommentCard({
       </BaseCard>
 
       <div
-        className={`${isReplyFormOpen ? "" : "hidden"} duration-500 not-motion-reduce:transition starting:opacity-0`}
+        className={`${isReplyFormOpen ? "" : "hidden max-h-0 opacity-0"} transition-discrete duration-500 not-motion-reduce:transition starting:opacity-0`}
       >
         <CommentForm
           buttonText="Reply"
