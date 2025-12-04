@@ -1,5 +1,3 @@
-import { Flipped } from "react-flip-toolkit";
-
 import type { FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
