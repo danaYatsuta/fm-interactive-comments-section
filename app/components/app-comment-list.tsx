@@ -1,3 +1,5 @@
+import { Flipped } from "react-flip-toolkit";
+
 import type { FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
@@ -44,19 +46,21 @@ export default function AppCommentList({
 
     const replyCards = replies.map((reply) => {
       return (
-        <li key={reply.id}>
-          <CommentCard
-            comment={reply}
-            formState={formState}
-            onCreateReplySubmit={(e) => onCreateReplySubmit(e, reply.id)}
-            onDeleteClick={() => onCommentDeleteClick(reply.id)}
-            onEditClick={() => onCommentEditClick(reply.id)}
-            onEditCommentSubmit={(e) => onEditCommentSubmit(e, reply.id)}
-            onFormCancelClick={onCommentFormCancelClick}
-            onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
-            onReplyClick={() => onCommentReplyClick(reply.id)}
-          />
-        </li>
+        <Flipped inverseFlipId={topLevelComment.id.toString()} key={reply.id}>
+          <li>
+            <CommentCard
+              comment={reply}
+              formState={formState}
+              onCreateReplySubmit={(e) => onCreateReplySubmit(e, reply.id)}
+              onDeleteClick={() => onCommentDeleteClick(reply.id)}
+              onEditClick={() => onCommentEditClick(reply.id)}
+              onEditCommentSubmit={(e) => onEditCommentSubmit(e, reply.id)}
+              onFormCancelClick={onCommentFormCancelClick}
+              onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
+              onReplyClick={() => onCommentReplyClick(reply.id)}
+            />
+          </li>
+        </Flipped>
       );
     });
 
@@ -79,12 +83,14 @@ export default function AppCommentList({
         />
 
         {replyCards.length !== 0 && (
-          <ul
-            aria-label="Replies"
-            className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"
-          >
-            {replyCards}
-          </ul>
+          <Flipped flipId={topLevelComment.id} translate>
+            <ul
+              aria-label="Replies"
+              className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"
+            >
+              {replyCards}
+            </ul>
+          </Flipped>
         )}
       </li>
     );
