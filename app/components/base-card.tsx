@@ -3,6 +3,8 @@ import { Flipped } from "react-flip-toolkit";
 
 export default function BaseCard({
   children,
+  // isFlipped prop provided for a special case for reply form in CommentCard
+  // if the reply form is flipped, then on entry it slides in diagonally, which is undesired
   isFlipped = true,
 }: Readonly<{ children: React.ReactNode; isFlipped?: boolean }>) {
   const flipId = useId();

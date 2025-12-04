@@ -81,8 +81,15 @@ export default function AppCommentList({
         />
 
         {replyCards.length !== 0 && (
+          // This Flipped is used to animate the replies border...
+
           <Flipped flipId={topLevelComment.id}>
             <div className="border-grey-100 mt-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10">
+              {/*
+                ...and this Flipped is used to cancel out the above Flipped,
+                since CommentCards are already animated via Flipped in BaseCard
+              */}
+
               <Flipped inverseFlipId={topLevelComment.id.toString()}>
                 <ul aria-label="Replies" className="flex flex-col gap-4">
                   {replyCards}
