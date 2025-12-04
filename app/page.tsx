@@ -189,10 +189,7 @@ export default function App() {
       </Flipper>
 
       <AppDialog
-        confirmButtonText={dialogState.confirmButtonText}
-        heading={dialogState.heading}
-        isOpen={dialogState.isOpen}
-        message={dialogState.message}
+        dialogState={dialogState}
         onCancelClick={handleDialogCancelClick}
         onConfirmClick={handleDialogConfirmClick}
       />

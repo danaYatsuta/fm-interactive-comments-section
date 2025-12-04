@@ -1,21 +1,17 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEffect, useRef } from "react";
 
+import type { DialogState } from "@/app/lib/reducers/dialog-reducer";
+
 import ButtonFilled from "@/app/components/button-filled";
 import { tw } from "@/app/lib/utils";
 
 export default function AppDialog({
-  confirmButtonText,
-  heading,
-  isOpen,
-  message,
+  dialogState,
   onCancelClick,
   onConfirmClick,
 }: Readonly<{
-  confirmButtonText: string;
-  heading: string;
-  isOpen: boolean;
-  message: string;
+  dialogState: DialogState;
   onCancelClick: () => void;
   onConfirmClick: () => void;
 }>) {
@@ -26,14 +22,14 @@ export default function AppDialog({
   useEffect(() => {
     if (dialogRef.current === null) return;
 
-    if (isOpen) {
+    if (dialogState.isOpen) {
       dialogRef.current.showModal();
       disableBodyScroll(dialogRef.current);
     } else {
       dialogRef.current.close();
       enableBodyScroll(dialogRef.current);
     }
-  }, [isOpen]);
+  }, [dialogState.isOpen]);
 
   /* --------------------------------- Markup --------------------------------- */
 
@@ -49,10 +45,10 @@ export default function AppDialog({
     >
       <div className="flex max-w-100 flex-col gap-3.5 rounded-lg bg-white px-7 py-6 md:gap-5 md:rounded-xl md:p-8">
         <h3 className="text-grey-800 xs:text-xl text-lg font-medium md:text-2xl">
-          {heading}
+          {dialogState.heading}
         </h3>
 
-        <p>{message}</p>
+        <p>{dialogState.message}</p>
 
         <div className="flex gap-3">
           <ButtonFilled
@@ -66,7 +62,7 @@ export default function AppDialog({
             color="pink"
             grow
             onClick={onConfirmClick}
-            text={confirmButtonText}
+            text={dialogState.confirmButtonText}
           />
         </div>
       </div>

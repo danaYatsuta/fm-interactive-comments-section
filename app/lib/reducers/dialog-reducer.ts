@@ -1,3 +1,11 @@
+export interface DialogState {
+  confirmButtonText: string;
+  heading: string;
+  isOpen: boolean;
+  message: string;
+  onConfirm: () => void;
+}
+
 type DialogAction =
   | {
       dialogType: DialogType;
@@ -7,14 +15,6 @@ type DialogAction =
   | {
       type: "close";
     };
-
-interface DialogState {
-  confirmButtonText: string;
-  heading: string;
-  isOpen: boolean;
-  message: string;
-  onConfirm: () => void;
-}
 
 type DialogType = "delete_comment" | "discard_edit" | "discard_reply";
 
