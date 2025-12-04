@@ -46,21 +46,19 @@ export default function AppCommentList({
 
     const replyCards = replies.map((reply) => {
       return (
-        <Flipped inverseFlipId={topLevelComment.id.toString()} key={reply.id}>
-          <li>
-            <CommentCard
-              comment={reply}
-              formState={formState}
-              onCreateReplySubmit={(e) => onCreateReplySubmit(e, reply.id)}
-              onDeleteClick={() => onCommentDeleteClick(reply.id)}
-              onEditClick={() => onCommentEditClick(reply.id)}
-              onEditCommentSubmit={(e) => onEditCommentSubmit(e, reply.id)}
-              onFormCancelClick={onCommentFormCancelClick}
-              onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
-              onReplyClick={() => onCommentReplyClick(reply.id)}
-            />
-          </li>
-        </Flipped>
+        <li key={reply.id}>
+          <CommentCard
+            comment={reply}
+            formState={formState}
+            onCreateReplySubmit={(e) => onCreateReplySubmit(e, reply.id)}
+            onDeleteClick={() => onCommentDeleteClick(reply.id)}
+            onEditClick={() => onCommentEditClick(reply.id)}
+            onEditCommentSubmit={(e) => onEditCommentSubmit(e, reply.id)}
+            onFormCancelClick={onCommentFormCancelClick}
+            onFormTextAreaValueChange={onCommentFormTextAreaValueChange}
+            onReplyClick={() => onCommentReplyClick(reply.id)}
+          />
+        </li>
       );
     });
 
@@ -83,13 +81,14 @@ export default function AppCommentList({
         />
 
         {replyCards.length !== 0 && (
-          <Flipped flipId={topLevelComment.id} translate>
-            <ul
-              aria-label="Replies"
-              className="border-grey-100 mt-4 flex flex-col gap-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10"
-            >
-              {replyCards}
-            </ul>
+          <Flipped flipId={topLevelComment.id}>
+            <div className="border-grey-100 mt-4 border-l-3 pl-4 md:mt-5 md:ml-10 md:pl-10">
+              <Flipped inverseFlipId={topLevelComment.id.toString()}>
+                <ul aria-label="Replies" className="flex flex-col gap-4">
+                  {replyCards}
+                </ul>
+              </Flipped>
+            </div>
           </Flipped>
         )}
       </li>
