@@ -1,3 +1,5 @@
+import { Flipped } from "react-flip-toolkit";
+
 import type { FormState } from "@/app/lib/reducers/form-reducer";
 import type { Comment } from "@/app/types";
 
@@ -134,9 +136,12 @@ export default function CommentCard({
         </article>
       </BaseCard>
 
-      {isReplyFormOpen && (
+      <div
+        className={`${isReplyFormOpen ? "" : "hidden"} duration-500 not-motion-reduce:transition starting:opacity-0`}
+      >
         <CommentForm
           buttonText="Reply"
+          isFlipped={false}
           onCancelClick={onFormCancelClick}
           onSubmit={onCreateReplySubmit}
           onTextAreaChange={onFormTextAreaValueChange}
@@ -144,7 +149,7 @@ export default function CommentCard({
           textAreaPlaceholder="Reply to the comment..."
           textAreaValue={formState.textAreaValue}
         />
-      )}
+      </div>
     </div>
   );
 }

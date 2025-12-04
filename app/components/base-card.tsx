@@ -3,14 +3,23 @@ import { Flipped } from "react-flip-toolkit";
 
 export default function BaseCard({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  isFlipped = true,
+}: Readonly<{ children: React.ReactNode; isFlipped?: boolean }>) {
   const flipId = useId();
 
-  return (
-    <Flipped flipId={flipId} translate>
-      <div className="text-grey-500 rounded-lg bg-white p-4 shadow-md md:rounded-xl md:p-6">
-        {children}
-      </div>
-    </Flipped>
+  const content = (
+    <div className="text-grey-500 rounded-lg bg-white p-4 shadow-md md:rounded-xl md:p-6">
+      {children}
+    </div>
   );
+
+  if (isFlipped) {
+    return (
+      <Flipped flipId={flipId} translate>
+        {content}
+      </Flipped>
+    );
+  }
+
+  return content;
 }

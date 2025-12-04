@@ -7,6 +7,7 @@ import commentsData from "@/app/exampleData";
 
 export default function CommentForm({
   buttonText,
+  isFlipped = true,
   onCancelClick,
   onSubmit,
   onTextAreaChange,
@@ -15,6 +16,7 @@ export default function CommentForm({
   textAreaValue,
 }: Readonly<{
   buttonText: string;
+  isFlipped?: boolean;
   onCancelClick?: () => void;
   onSubmit: React.FormEventHandler<HTMLFormElement>;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -25,7 +27,7 @@ export default function CommentForm({
   /* --------------------------------- Markup --------------------------------- */
 
   return (
-    <BaseCard>
+    <BaseCard isFlipped={isFlipped}>
       <form className="grid gap-4 md:flex" onSubmit={onSubmit}>
         <div className="col-span-2 grow">
           <BaseTextArea
