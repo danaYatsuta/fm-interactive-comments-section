@@ -34,9 +34,9 @@ export default function AppDialog({
   /* --------------------------------- Markup --------------------------------- */
 
   // Classes related to animation in a separate variable for better readability
-  const dialogAnimationClasses = tw`translate-y-4 opacity-0 transition transition-discrete duration-500 open:translate-y-0 open:opacity-100 motion-reduce:transition-none starting:open:translate-y-4 starting:open:opacity-0`;
+  const dialogAnimationClasses = tw`translate-y-4 opacity-0 transition-discrete duration-500 not-motion-reduce:transition open:translate-y-0 open:opacity-100 starting:open:translate-y-4 starting:open:opacity-0`;
 
-  const backdropAnimationClasses = tw`backdrop:bg-transparent backdrop:transition backdrop:transition-discrete backdrop:duration-500 motion-reduce:backdrop:transition-none starting:open:backdrop:bg-transparent`;
+  const backdropAnimationClasses = tw`backdrop:bg-transparent backdrop:transition-discrete backdrop:duration-500 not-motion-reduce:backdrop:transition starting:open:backdrop:bg-transparent`;
 
   return (
     <dialog

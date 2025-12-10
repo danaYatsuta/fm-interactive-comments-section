@@ -6,7 +6,7 @@
   }
 
   button {
-    @apply cursor-pointer transition-[color,opacity] motion-reduce:transition-none;
+    @apply cursor-pointer not-motion-reduce:transition;
   }
 }
 
