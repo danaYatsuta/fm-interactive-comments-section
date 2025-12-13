@@ -1,5 +1,3 @@
-"use server";
-
 import postgres from "postgres";
 
 import type {
