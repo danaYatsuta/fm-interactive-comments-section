@@ -4,8 +4,7 @@ import { fetchComments } from "@/app/lib/data";
 export default async function App() {
   const comments = await fetchComments();
 
-  // TODO proper error handling
-  if (comments instanceof Response) throw new Error("Failed to fetch comments");
+  if (comments instanceof Response) return <p>Something went wrong</p>;
 
   return <TemporaryClientComponent comments={comments} />;
 }
