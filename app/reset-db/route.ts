@@ -46,11 +46,11 @@ async function seedComments() {
 
       content TEXT NOT NULL,
       score INTEGER NOT NULL,
-      user_id INTEGER NOT NULL,
+      user_id INTEGER NOT NULL REFERENCES users(id),
 
       is_reply BOOLEAN NOT NULL,
-      parent_comment_id INTEGER,
-      replying_to_comment_id INTEGER,
+      parent_comment_id INTEGER REFERENCES comments(id),
+      replying_to_comment_id INTEGER REFERENCES comments(id),
       
       created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp(),
       updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp()
