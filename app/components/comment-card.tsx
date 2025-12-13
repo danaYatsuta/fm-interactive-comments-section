@@ -37,7 +37,7 @@ export default function CommentCard({
   // TODO this is a mock for checking whether comment belongs to current user
   // Replace with actual check when auth is implemented
 
-  const canUserEdit = comment.username === "juliusomo";
+  const canUserEdit = comment.user.name === "juliusomo";
 
   const formattedScore =
     comment.score >= 1000
@@ -71,7 +71,7 @@ export default function CommentCard({
           id={`comment-${comment.id}`}
         >
           <h2 className="sr-only" id={`comment-label-${comment.id}`}>
-            Comment by {comment.username} left{" "}
+            Comment by {comment.user.name} left{" "}
             <TimeAgoWrapper date={comment.createdAt} />
           </h2>
 
@@ -79,8 +79,8 @@ export default function CommentCard({
             <CommentCardHeader
               canUserEdit={canUserEdit}
               createdAt={comment.createdAt}
-              userAvatar={comment.userAvatar}
-              username={comment.username}
+              userAvatar={comment.user.avatar}
+              username={comment.user.name}
             />
           </div>
 
@@ -115,9 +115,9 @@ export default function CommentCard({
                   <a
                     aria-label="Jump to parent comment"
                     className="rounded-sm font-medium text-purple-600 hover:underline"
-                    href={`#comment-${comment.replyingToId}`}
+                    href={`#comment-${comment.replyingToCommentId}`}
                   >
-                    @{comment.replyingToUsername}
+                    @{comment.replyingToUserName}
                   </a>
                 )}{" "}
                 {comment.content}
