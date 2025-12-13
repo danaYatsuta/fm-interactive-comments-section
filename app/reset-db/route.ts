@@ -3,6 +3,7 @@ import postgres from "postgres";
 import { comments, users } from "@/app/reset-db/seed-data";
 
 const sql = postgres(process.env.POSTGRES_URL as string, {
+  max: 1,
   ssl: process.env.NODE_ENV === "production" ? "verify-full" : false,
 });
 
@@ -70,13 +71,13 @@ async function seedComments() {
       comment.replying_to_comment_id
     ) {
       await sql`
-        INSERT INTO comments (content, score, user_id, is_reply, parent_comment_id, replying_to_comment_id, created_at, updated_at)
-        VALUES (${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.parent_comment_id}, ${comment.replying_to_comment_id}, ${comment.created_at}, ${comment.created_at});
+        INSERT INTO comments (id, content, score, user_id, is_reply, parent_comment_id, replying_to_comment_id, created_at, updated_at)
+        VALUES (${comment.id}, ${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.parent_comment_id}, ${comment.replying_to_comment_id}, ${comment.created_at}, ${comment.created_at});
       `;
     } else {
       await sql`
-        INSERT INTO comments (content, score, user_id, is_reply, created_at, updated_at)
-        VALUES (${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.created_at}, ${comment.created_at});
+        INSERT INTO comments (id, content, score, user_id, is_reply, created_at, updated_at)
+        VALUES (${comment.id}, ${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.created_at}, ${comment.created_at});
       `;
     }
   });
