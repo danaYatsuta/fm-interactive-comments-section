@@ -2,7 +2,9 @@ import postgres from "postgres";
 
 import { comments, users } from "@/app/reset-db/seed-data";
 
-const sql = postgres(process.env.POSTGRES_URL as string);
+const sql = postgres(process.env.POSTGRES_URL as string, {
+  ssl: "verify-full",
+});
 
 export async function GET() {
   try {
