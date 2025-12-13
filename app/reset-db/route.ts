@@ -50,15 +50,15 @@ async function seedComments() {
 
       is_reply BOOLEAN NOT NULL,
       parent_comment_id INTEGER,
-      replying_to_user_id INTEGER,
+      replying_to_comment_id INTEGER,
       
       created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp(),
       updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp()
 
       CHECK (
-        (is_reply = FALSE AND parent_comment_id IS NULL AND replying_to_user_id IS NULL)
+        (is_reply = FALSE AND parent_comment_id IS NULL AND replying_to_comment_id IS NULL)
         OR
-        (is_reply = TRUE AND parent_comment_id IS NOT NULL AND replying_to_user_id IS NOT NULL)
+        (is_reply = TRUE AND parent_comment_id IS NOT NULL AND replying_to_comment_id IS NOT NULL)
       )
     );
   `;
@@ -67,11 +67,11 @@ async function seedComments() {
     if (
       comment.is_reply &&
       comment.parent_comment_id &&
-      comment.replying_to_user_id
+      comment.replying_to_comment_id
     ) {
       await sql`
-        INSERT INTO comments (content, score, user_id, is_reply, parent_comment_id, replying_to_user_id, created_at, updated_at)
-        VALUES (${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.parent_comment_id}, ${comment.replying_to_user_id}, ${comment.created_at}, ${comment.created_at});
+        INSERT INTO comments (content, score, user_id, is_reply, parent_comment_id, replying_to_comment_id, created_at, updated_at)
+        VALUES (${comment.content}, ${comment.score}, ${comment.user_id}, ${comment.is_reply}, ${comment.parent_comment_id}, ${comment.replying_to_comment_id}, ${comment.created_at}, ${comment.created_at});
       `;
     } else {
       await sql`
