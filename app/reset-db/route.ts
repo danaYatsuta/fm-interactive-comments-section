@@ -36,12 +36,12 @@ async function createTriggers() {
 }
 
 async function dropTables() {
-  await sql`DROP TABLE users,comments;`;
+  await sql`DROP TABLE IF EXISTS users,comments;`;
 }
 
 async function seedComments() {
   await sql`
-    CREATE TABLE IF NOT EXISTS comments (
+    CREATE TABLE comments (
       id SERIAL PRIMARY KEY,
 
       content TEXT NOT NULL,
@@ -84,7 +84,7 @@ async function seedComments() {
 
 async function seedUsers() {
   await sql`
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE users (
       id SERIAL PRIMARY KEY,
 
       user_avatar VARCHAR(255),
