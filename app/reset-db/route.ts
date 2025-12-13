@@ -88,8 +88,8 @@ async function seedUsers() {
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
 
-      user_avatar VARCHAR(255),
-      username VARCHAR(32) NOT NULL,
+      avatar VARCHAR(255),
+      name VARCHAR(32) NOT NULL,
 
       created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp(),
       updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT clock_timestamp()
@@ -98,8 +98,8 @@ async function seedUsers() {
 
   users.forEach(async (user) => {
     await sql`
-      INSERT INTO users (id, user_avatar, username)
-      VALUES (${user.id}, ${user.user_avatar}, ${user.username});
+      INSERT INTO users (id, avatar, name)
+      VALUES (${user.id}, ${user.avatar}, ${user.name});
     `;
   });
 }
